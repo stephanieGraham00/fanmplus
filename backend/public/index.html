@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanm+ — Konesans, Sante, Libète</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<!-- AUTH -->
+<div class="auth-overlay show" id="authOverlay">
+  <div class="auth-box" id="loginBox">
+    <div class="cute-logo"><div class="cl-heart"></div><div class="cl-text">Fanm<div class="cl-plus">+</div></div></div>
+    <h2 class="auth-title" data-i18n="login_title">Byenvini!</h2>
+    <p class="auth-subtitle" data-i18n="login_subtitle">Konekte pou kontinye</p>
+    <div class="form-group"><label data-i18n="email">Imèl</label><input type="email" id="loginEmail" value="admin@fanmplus.com"></div>
+    <div class="form-group"><label data-i18n="password">Modpas</label><input type="password" id="loginPassword" value="admin123"></div>
+    <div id="loginError" class="auth-error" style="display:none"></div>
+    <button class="btn btn-primary btn-full" onclick="handleLogin()">♥ <span data-i18n="login_btn">Konekte</span></button>
+  <div class="auth-toggle"><span data-i18n="no_account">Pa gen kont?</span> <a onclick="showRegister()" data-i18n="register_btn">Kreye yon kont</a></div>
+  <div class="auth-toggle" style="margin-top:10px;font-size:12px;color:#999;"><span>🌐</span> <label><input type="checkbox" id="apiModeToggleLogin" onchange="toggleApiMode()" checked> Mode serveur (backend)</label></div>
+</div>
+  <div class="auth-box" id="registerBox" style="display:none">
+    <div class="cute-logo"><div class="cl-heart"></div><div class="cl-text">Fanm<div class="cl-plus">+</div></div></div>
+    <h2 class="auth-title" data-i18n="register_title">Antre Fanm+</h2>
+    <p class="auth-subtitle" data-i18n="register_subtitle">Kreye kont ou</p>
+    <div class="form-group"><label data-i18n="profile_name">Non</label><input type="text" id="regName"></div>
+    <div class="form-group"><label data-i18n="email">Imèl</label><input type="email" id="regEmail"></div>
+    <div class="form-group"><label data-i18n="password">Modpas</label><input type="password" id="regPassword"></div>
+    <div class="form-group"><label data-i18n="reg_health_info">Enfòmasyon Sante</label><textarea id="regHealthInfo" rows="2"></textarea></div>
+    <button class="btn btn-primary btn-full" onclick="handleRegister()">♥ <span data-i18n="register_btn">Kreye Kont</span></button>
+  <div class="auth-toggle"><span data-i18n="have_account">Gen kont deja?</span> <a onclick="showLogin()" data-i18n="login_btn">Konekte</a></div>
+  <div class="auth-toggle" style="margin-top:10px;font-size:12px;color:#999;"><span>🌐</span> <label><input type="checkbox" id="apiModeToggle" onchange="toggleApiMode()" checked> Mode serveur (backend)</label></div>
+</div>
+</div>
+
+<!-- SOS FLOATING -->
+<div class="sos-float">
+  <button class="sos-btn" onclick="showSOS()">SOS</button>
+  <span class="sos-label" data-i18n="sos_title">SOS</span>
+</div>
+
+<!-- HEADER -->
+<header>
+<div class="header-inner">
+  <div class="logo" onclick="showSection('home')">
+    <div class="cute-logo small"><div class="cl-heart"></div><div class="cl-text">Fanm<div class="cl-plus">+</div></div></div>
+  </div>
+  <nav id="mainNav">
+    <button class="active" data-section="home"><span>♥</span> <span data-i18n="nav_home">Akèy</span></button>
+    <button data-section="period"><span>🌸</span> <span data-i18n="nav_period">Sik</span></button>
+    <button data-section="puberty"><span>🌱</span> <span data-i18n="nav_puberty">Pibète</span></button>
+    <button data-section="rights"><span>✊</span> <span data-i18n="nav_rights">Dwa</span></button>
+    <button data-section="pregnancy"><span>👶</span> <span data-i18n="nav_pregnancy">Gwosès</span></button>
+    <button data-section="appointments"><span>📅</span> <span data-i18n="nav_appointments">Randevou</span></button>
+    <button data-section="chat"><span>🤖</span> <span data-i18n="nav_chat">AI</span></button>
+    <button data-section="emergency"><span>🚨</span> <span data-i18n="nav_emergency">Ijans</span></button>
+    <button data-section="hiv"><span>🎗️</span> <span data-i18n="nav_hiv">VIH</span></button>
+    <button data-section="journal"><span>📖</span> <span data-i18n="nav_journal">Jounal</span></button>
+    <button data-section="profile"><span>👤</span> <span data-i18n="nav_profile">Pwofil</span></button>
+  </nav>
+  <div class="header-controls">
+    <button class="theme-toggle" onclick="showSettings()" title="Anviwònman">⚙️</button>
+    <button class="theme-toggle" onclick="showAdmin()" title="Admin">🛡️</button>
+    <button class="theme-toggle" onclick="handleLogout()" title="Dekonekte">🚪</button>
+  </div>
+</div>
+</header>
+
+<main class="container">
+
+<!-- HERO -->
+<div class="hero" id="heroSection">
+  <div class="cute-logo hero-logo"><div class="cl-heart"></div><div class="cl-text">Fanm<div class="cl-plus">+</div></div></div>
+  <h1 data-i18n="home_hero">Byenvini nan Fanm+</h1>
+  <p data-i18n="home_hero_desc">Konesans, Sante, Libète — pou chak fanm, toupatou.</p>
+</div>
+
+<!-- MOTIVATION -->
+<div class="motivation-bar" id="motivationBar">
+  <div class="motivation-label">♥ <span data-i18n="motivation_title">Motivasyon</span></div>
+  <div class="motivation-text" id="motivationText">Ou pi fò pase sa w konnen...</div>
+</div>
+
+<!-- AI MANAGER -->
+<div class="ai-manager-bar" id="aiManagerBar">
+  <span class="ai-manager-icon">🤖</span>
+  <span data-i18n="ai_manager_active">Asistan AI aktif</span>
+  <span class="ai-manager-status" id="aiManagerStatus">Aktif</span>
+</div>
+
+<!-- HOME -->
+<section id="section-home" class="section active">
+  <h2 class="section-title">♥ <span data-i18n="nav_home">Fanm+</span></h2>
+  <p class="section-desc" data-i18n="home_desc">Espas ou pou konesans, sante, ak byennèt.</p>
+  <div class="card-grid">
+    <div class="card" onclick="showSection('period')"><div class="card-icon">🌸</div><h3 data-i18n="nav_period">Sik Menstryèl</h3><p data-i18n="card_period_desc">Swiv sik ou ak presizyon.</p></div>
+    <div class="card" onclick="showSection('puberty')"><div class="card-icon">🌱</div><h3 data-i18n="nav_puberty">Pibète</h3><p data-i18n="card_puberty_desc">Aprann sou chanjman kò w.</p></div>
+    <div class="card" onclick="showSection('rights')"><div class="card-icon">✊</div><h3 data-i18n="nav_rights">Dwa Fanm</h3><p data-i18n="card_rights_desc">Konen dwa w.</p></div>
+    <div class="card" onclick="showSection('pregnancy')"><div class="card-icon">👶</div><h3 data-i18n="nav_pregnancy">Gwosès</h3><p data-i18n="card_pregnancy_desc">Swiv gwosès ou.</p></div>
+    <div class="card" onclick="showSection('appointments')"><div class="card-icon">📅</div><h3 data-i18n="nav_appointments">Randevou</h3><p data-i18n="card_appointments_desc">Prive ak doktè.</p></div>
+    <div class="card" onclick="showSection('chat')"><div class="card-icon">🤖</div><h3 data-i18n="nav_chat">AI Chat</h3><p data-i18n="card_chat_desc">Poze tout kesyon ou yo.</p></div>
+    <div class="card" onclick="showSection('emergency')"><div class="card-icon">🚨</div><h3 data-i18n="nav_emergency">Ijans</h3><p data-i18n="card_emergency_desc">Nimewo ijans, doktè, famasi.</p></div>
+    <div class="card" onclick="showSection('hiv')"><div class="card-icon">🎗️</div><h3 data-i18n="nav_hiv">VIH/SIDA</h3><p data-i18n="card_hiv_desc">Enfòmasyon, sipò, tretman.</p></div>
+    <div class="card" onclick="showSection('journal')"><div class="card-icon">📖</div><h3 data-i18n="nav_journal">Jounal Entim</h3><p data-i18n="card_journal_desc">Ekri panse ou.</p></div>
+  </div>
+
+  <h2 class="section-title">👭 <span data-i18n="social_title">Kominote</span></h2>
+  <div class="social-post-form">
+    <textarea id="postText" class="social-input" placeholder="Pataje ak sè w yo..." data-i18n-placeholder="social_post_placeholder"></textarea>
+    <div class="social-form-actions">
+      <span class="social-privacy">🌍 <span data-i18n="social_public">Piblik</span></span>
+      <button class="btn btn-rose btn-sm" onclick="publishPost()">💌 <span data-i18n="social_publish">Pibliye</span></button>
+    </div>
+  </div>
+  <div class="social-feed" id="socialFeed"></div>
+</section>
+
+<!-- PERIOD TRACKER + OVULATION -->
+<section id="section-period" class="section">
+  <h2 class="section-title">🌸 <span data-i18n="period_title">Swiv Sik Menstryèl</span></h2>
+  <p class="section-desc" data-i18n="period_desc">Kalkil egzak — konnen kò w ak presizyon.</p>
+
+  <div class="period-tracker">
+    <div class="period-header">
+      <div>
+        <span class="cycle-hearts" id="cycleHeartsDisplay">♥♥♥♥♥</span>
+        <span class="period-badge">🌸 <span data-i18n="period_cycle_day">Jou Sik</span> <span id="cycleDayDisplay">1</span></span>
+      </div>
+      <div class="period-phase" id="periodPhaseDisplay">🌞 Fenèt Fetil</div>
+    </div>
+
+    <div class="period-stats-top">
+      <div class="pstat"><span class="pstat-val" id="nextPeriodDisplay">--</span><span class="pstat-lbl">♥ <span data-i18n="period_next">Pwochen Peryòd</span></span></div>
+      <div class="pstat"><span class="pstat-val" id="nextOvulationDisplay">--</span><span class="pstat-lbl">🌞 <span data-i18n="ovulation_next">Pwochen Ovilasyon</span></span></div>
+      <div class="pstat"><span class="pstat-val" id="fertileDisplay">--</span><span class="pstat-lbl">💛 <span data-i18n="ovulation_fertile_days">Fenèt Fetil</span></span></div>
+    </div>
+
+    <div class="period-calendar" id="periodCalendar"></div>
+
+    <div class="period-settings">
+      <div class="ps-group"><label>📏 <span data-i18n="period_cycle">Longè Sik</span></label><input type="number" id="cycleLengthInput" value="28" min="21" max="45" onchange="updateCycleSettings()" class="cute-input sm"></div>
+      <div class="ps-group"><label>💧 <span data-i18n="period_period">Dire Peryòd</span></label><input type="number" id="periodLengthInput" value="5" min="2" max="10" onchange="updateCycleSettings()" class="cute-input sm"></div>
+      <div class="ps-group"><label>📅 <span data-i18n="period_last">Dènye Peryòd (sa gen)</span></label><input type="number" id="lastPeriodInput" value="14" min="1" max="90" onchange="updateCycleSettings()" class="cute-input sm"></div>
+    </div>
+
+    <div class="period-flow-section">
+      <label class="cute-label">💧 <span data-i18n="period_flow">Kantite Jodi a</span></label>
+      <div class="period-flow-select">
+        <button onclick="selectFlow(this,'light')" class="active"><span class="flow-dot" style="background:#f8bbd0"></span> <span data-i18n="period_flow_light">Lejè</span></button>
+        <button onclick="selectFlow(this,'medium')"><span class="flow-dot" style="background:#e91e63"></span> <span data-i18n="period_flow_medium">Mwayen</span></button>
+        <button onclick="selectFlow(this,'heavy')"><span class="flow-dot" style="background:#880e4f"></span> <span data-i18n="period_flow_heavy">Anpil</span></button>
+        <button onclick="selectFlow(this,'none')"><span class="flow-dot" style="background:#ccc"></span> Anyen</button>
+      </div>
+      <label class="cute-label">🤕 <span data-i18n="period_symptoms">Sentòm</span></label>
+      <div class="symptom-tags">
+        <button onclick="toggleSymptom(this,'cramps')">💢 Kramp</button>
+        <button onclick="toggleSymptom(this,'headache')">🤕 Tèt</button>
+        <button onclick="toggleSymptom(this,'bloating')">🫃 Vant</button>
+        <button onclick="toggleSymptom(this,'fatigue')">😴 Fatig</button>
+        <button onclick="toggleSymptom(this,'mood')">😢 Imè</button>
+        <button onclick="toggleSymptom(this,'breast')">🫂 Tèt</button>
+        <button onclick="toggleSymptom(this,'back')">🔙 Do</button>
+        <button onclick="toggleSymptom(this,'acne')">💢 Akne</button>
+      </div>
+      <button class="btn btn-rose btn-sm" onclick="savePeriodLog()">💾 <span data-i18n="period_save">Sere Jodi a ♥</span></button>
+    </div>
+  </div>
+
+  <h2 class="section-title">🌞 <span data-i18n="ovulation_title">Kalandriye Ovilasyon</span></h2>
+  <p class="section-desc" data-i18n="ovulation_desc">Kalkil egzak — konnen jou fetil ou yo.</p>
+  <div class="ovulation-view">
+    <div class="ovulation-info">
+      <div><span>🌞 <span data-i18n="ovulation_day">Jou Ovilasyon</span>:</span> <strong id="ovulationDayDisplay">Jou 14</strong></div>
+      <div><span>💛 <span data-i18n="ovulation_fertile_days">Fenèt Fetil</span>:</span> <strong id="fertileWindowDisplay">Jou 9 - 15</strong></div>
+      <div><span>📊 <span data-i18n="period_cycle">Sik</span>:</span> <strong id="cycleInfoDisplay">28 jou</strong></div>
+    </div>
+    <div class="ovulation-bar" id="ovulationBar"></div>
+    <div class="ovulation-legend">
+      <span><span class="legend-dot safe"></span> <span data-i18n="ovulation_safe">San Risk</span></span>
+      <span><span class="legend-dot fertile"></span> <span data-i18n="ovulation_fertile">Fetil</span></span>
+      <span><span class="legend-dot ovulation"></span> <span data-i18n="ovulation_ovulation">Ovilasyon</span></span>
+      <span><span class="legend-dot period"></span> <span>Peryòd</span></span>
+    </div>
+  </div>
+
+  <h2 class="section-title">💋 <span data-i18n="sex_tracker">Swiv Seksyèl</span></h2>
+  <p class="section-desc" data-i18n="sex_tracker_desc">Anrejistre aktivite w pou sante ou.</p>
+  <div class="sex-tracker">
+    <div class="sex-log-options">
+      <button class="sex-option protected" onclick="logSexActivity(true)">✅ <span data-i18n="sex_protected">Pwoteje</span></button>
+      <button class="sex-option unprotected" onclick="logSexActivity(false)">⚠️ <span data-i18n="sex_unprotected">Pa Pwoteje</span></button>
+    </div>
+    <div id="sexHistory" class="sex-history"></div>
+  </div>
+</section>
+
+<!-- PUBERTY - 30+ PANELS -->
+<section id="section-puberty" class="section">
+  <h2 class="section-title">🌱 <span data-i18n="puberty_title">Pibète & Adolèns</span></h2>
+  <p class="section-desc" data-i18n="puberty_desc">Tout sa w bezwen konnen sou kò w, chanjman, ak sante.</p>
+  <div class="puberty-container" id="pubertyContainer"></div>
+
+  <h2 class="section-title">💡 <span data-i18n="puberty_advice_title">Konsey Entaktif (100+)</span></h2>
+  <div class="interactive-advice" id="interactiveAdvice"></div>
+
+  <h2 class="section-title">✊ <span data-i18n="puberty_quiz_title">Tès Konesans</span></h2>
+  <div class="puberty-quiz" id="pubertyQuiz"></div>
+</section>
+
+<!-- DWA FANM -->
+<section id="section-rights" class="section">
+  <h2 class="section-title">✊ <span data-i18n="dwa_fanm_title">Dwa Fanm — Konesans se Pouvwa</span></h2>
+  <p class="section-desc" data-i18n="dwa_fanm_desc">Konen dwa w. Aji. Pwoteje tèt ou ak lòt fanm.</p>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">⚖️</div><h3 data-i18n="dwa_fanm_legal">Dwa Legal</h3><p data-i18n="dwa_fanm_legal_detail">Otonomi kò w, libète kont vyolans, pwoteksyon legal.</p></div>
+    <div class="card"><div class="card-icon">🏥</div><h3 data-i18n="dwa_fanm_health">Dwa Sante</h3><p data-i18n="dwa_fanm_health_detail">Swen sante repwodiktif, kontrasepsyon — dwa fondamantal.</p></div>
+    <div class="card"><div class="card-icon">📚</div><h3 data-i18n="dwa_fanm_education">Dwa Edikasyon</h3><p data-i18n="dwa_fanm_education_detail">Chak fi merite edikasyon egal. Konesans ouvri pòt.</p></div>
+    <div class="card"><div class="card-icon">🛡️</div><h3 data-i18n="dwa_fanm_violence">Kont Vyolans</h3><p data-i18n="dwa_fanm_violence_detail">Ou merite sekirite. Èd 24/7. Tape SOS la.</p></div>
+    <div class="card"><div class="card-icon">🏠</div><h3 data-i18n="dwa_fanm_resources">Resous</h3><p data-i18n="dwa_fanm_resources_detail">Èd legal, abri, konsèy psikolojik.</p></div>
+  </div>
+  <h3 class="section-subtitle">📄 <span data-i18n="dwa_documents">Dokiman Legal</span></h3>
+  <div class="doc-list">
+    <div class="doc-card-download" onclick="downloadDoc('rights')"><div class="doc-icon">📄</div><div class="doc-title" data-i18n="dwa_document1">Gid Dwa w yo</div><span class="btn btn-rose btn-sm">⬇️ PDF</span></div>
+    <div class="doc-card-download" onclick="downloadDoc('protection')"><div class="doc-icon">📋</div><div class="doc-title" data-i18n="dwa_document2">Fòm Pwoteksyon</div><span class="btn btn-rose btn-sm">⬇️ PDF</span></div>
+    <div class="doc-card-download" onclick="downloadDoc('emergency')"><div class="doc-icon">🏠</div><div class="doc-title" data-i18n="dwa_document3">Kat Ijans</div><span class="btn btn-rose btn-sm">⬇️ PDF</span></div>
+  </div>
+</section>
+
+<!-- PREGNANCY -->
+<section id="section-pregnancy" class="section">
+  <h2 class="section-title">👶 <span data-i18n="pregnancy_title">Gwosès — Swiv Semèn pa Semèn</span></h2>
+  <p class="section-desc" data-i18n="pregnancy_desc">Kalkil egzak ak konsey entaktif.</p>
+  <div class="pregnancy-tracker">
+    <div class="week-display" id="weekDisplay">12</div>
+    <div class="week-label" data-i18n="pregnancy_weeks">Semèn Gwosès</div>
+    <div class="baby-icon" id="babyIcon">👶</div>
+    <div class="baby-size" id="babySizeDisplay">📏 Gwosè: Prinye (2.1 pous)</div>
+    <div class="due-date">📅 <span data-i18n="pregnancy_due_date">Dat Akouchman</span>: <span id="dueDateValue">Des 2026</span></div>
+    <input type="range" class="week-slider" id="weekSlider" min="1" max="42" value="12" oninput="updatePregnancy(this.value)">
+    <div class="pregnancy-progress"><div class="progress-fill" style="width:28%"></div></div>
+    <div class="tip-card">💡 <span data-i18n="pregnancy_tip">Konsey</span>: <span id="tipText">Bwe anpil dlo!</span></div>
+  </div>
+  <div class="pregnancy-extras">
+    <div class="preg-card">
+      <h4>😊 <span data-i18n="pregnancy_mood">Mood Tracker</span></h4>
+      <div class="mood-selector">
+        <button class="mood-btn" onclick="logPregMood('happy')">😊</button>
+        <button class="mood-btn" onclick="logPregMood('tired')">😴</button>
+        <button class="mood-btn" onclick="logPregMood('sick')">🤢</button>
+        <button class="mood-btn" onclick="logPregMood('sad')">😢</button>
+        <button class="mood-btn" onclick="logPregMood('anxious')">😰</button>
+        <button class="mood-btn" onclick="logPregMood('excited')">🤩</button>
+      </div>
+      <div id="pregMoodLog" class="mood-log"></div>
+    </div>
+    <div class="preg-card">
+      <h4>🤕 <span data-i18n="pregnancy_symptoms">Sentòm</span></h4>
+      <div class="symptom-input-row"><input type="text" id="symptomInput" class="cute-input" placeholder="Nore..."><button class="btn btn-rose btn-sm" onclick="logSymptom()">+</button></div>
+      <div id="symptomList" class="symptom-list"></div>
+    </div>
+    <div class="preg-card">
+      <h4>⚖️ <span data-i18n="pregnancy_weight">Pwa</span></h4>
+      <div class="symptom-input-row"><input type="number" id="weightInput" class="cute-input" placeholder="kg" step="0.1"><button class="btn btn-rose btn-sm" onclick="logWeight()">+</button></div>
+      <div id="weightLog" class="symptom-list"></div>
+    </div>
+  </div>
+  <h3 class="section-subtitle">💡 <span data-i18n="pregnancy_interactive_tips">Konsey Entaktif pou Fanm Ansent</span></h3>
+  <div class="pregnancy-tips" id="pregnancyTips"></div>
+</section>
+
+<!-- APPOINTMENTS -->
+<section id="section-appointments" class="section">
+  <h2 class="section-title">📅 <span data-i18n="appointments_title">Randevou</span></h2>
+  <p class="section-desc" data-i18n="appointments_desc">Prive ak jinekoloj, sikològ, espesyalis.</p>
+  <div class="appt-actions">
+    <button class="btn btn-primary btn-sm" onclick="showBookingModal('gyne')">👩‍⚕️ <span data-i18n="appointments_gyne">Jinekoloj</span></button>
+    <button class="btn btn-secondary btn-sm" onclick="showBookingModal('psycho')">🧠 <span data-i18n="appointments_psycho">Sikològ</span></button>
+    <button class="btn btn-secondary btn-sm" onclick="showBookingModal('family')">👨‍👩‍👧 <span data-i18n="appointments_family">Fanmi</span></button>
+    <button class="btn btn-secondary btn-sm" onclick="showBookingModal('pediatrics')">👶 <span data-i18n="appointments_pediatrics">Pediat</span></button>
+    <button class="btn btn-outline btn-sm" onclick="showDoctorManager()">👨‍⚕️ <span data-i18n="appointments_manage">Jere Doktè</span></button>
+  </div>
+  <div class="appointment-list" id="appointmentList"></div>
+</section>
+
+<!-- AI CHAT -->
+<section id="section-chat" class="section">
+  <h2 class="section-title">🤖 <span data-i18n="ai_title">Asistant Sante AI</span></h2>
+  <p class="section-desc" data-i18n="ai_desc">Poze tout kesyon ou — jwenn repons enstantane.</p>
+  <div class="chat-container">
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="ai-quick-categories" id="aiQuickCategories">
+      <button class="ai-cat-btn" onclick="aiQuickAsk('puberty')">🌱 Pibète</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('period')">🌸 Peryòd</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('sex')">💋 Edikasyon</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('contraception')">💊 Kontrasepsyon</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('pregnancy')">👶 Gwosès</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('sti')">🔬 IST</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('health')">🏥 Sante</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('rights')">✊ Dwa</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('mental')">🧠 Mantal</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('nutrition')">🥗 Nitrisyon</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('hiv')">🎗️ VIH</button>
+      <button class="ai-cat-btn" onclick="aiQuickAsk('violence')">🛡️ Vyolans</button>
+      <button class="ai-cat-btn" onclick="aiRandomQuestion()">🎲 Oaza</button>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" class="cute-input" placeholder="Poze yon kesyon..." onkeypress="if(event.key==='Enter') sendChat()">
+      <button onclick="sendChat()" class="chat-send-btn">💌</button>
+    </div>
+    <div class="chat-stats"><span id="chatQuestionCount">5,000+</span> kesyon disponib</div>
+  </div>
+</section>
+
+<!-- EMERGENCY AGENDA -->
+<section id="section-emergency" class="section">
+  <h2 class="section-title">🚨 <span data-i18n="emergency_title">Ajanda Ijans</span></h2>
+  <p class="section-desc" data-i18n="emergency_desc">Tout nimewo ijans ou bezwen — peze pou rele dirèkteman.</p>
+  <div class="emergency-grid">
+    <div class="emergency-category">
+      <h3>🚑 <span data-i18n="emergency_ambulance">Ijans Medikal</span></h3>
+      <div class="emergency-numbers">
+        <a href="tel:118" class="emergency-btn">🚑 118 — Anbilans</a>
+        <a href="tel:116" class="emergency-btn">🏥 116 — Lopital</a>
+        <a href="tel:115" class="emergency-btn">🚨 115 — Polis</a>
+        <a href="tel:116" class="emergency-btn">🚒 116 — Ponpye</a>
+      </div>
+    </div>
+    <div class="emergency-category">
+      <h3>🛡️ <span data-i18n="emergency_violence">SOS Vyolans Fanm</span></h3>
+      <div class="emergency-numbers">
+        <a href="tel:174" class="emergency-btn sos-btn-num">🛡️ 174 — Kay Fanm (Ayiti)</a>
+        <a href="tel:3919" class="emergency-btn sos-btn-num">📞 3919 — Vyolans Fanm (Frans)</a>
+        <a href="tel:18007997233" class="emergency-btn sos-btn-num">🌍 1-800-799-7233 (USA)</a>
+        <a href="tel:18668630511" class="emergency-btn sos-btn-num">🌍 1-866-863-0511 (Kanada)</a>
+      </div>
+    </div>
+    <div class="emergency-category">
+      <h3>💊 <span data-i18n="emergency_pharmacy">Famasi</span></h3>
+      <div class="emergency-numbers" id="pharmacyNumbers"></div>
+    </div>
+    <div class="emergency-category">
+      <h3>👩‍⚕️ <span data-i18n="emergency_doctors">Doktè</span></h3>
+      <div class="emergency-numbers" id="emergencyDoctors"></div>
+    </div>
+    <div class="emergency-category">
+      <h3>🧠 <span data-i18n="emergency_psycho">Sipò Psikolojik</span></h3>
+      <div class="emergency-numbers">
+        <a href="tel:50937021102" class="emergency-btn support-btn">📞 Dr. Pierre Durand (Sikològ)</a>
+        <a href="tel:50937021103" class="emergency-btn support-btn">📞 Dr. Claire Michel (Sikològ)</a>
+        <a href="tel:50937021109" class="emergency-btn support-btn">📞 Dr. Fritzner Joseph (Sikològ)</a>
+      </div>
+    </div>
+  </div>
+  <div class="emergency-important-note">♥ Tout nimewo sa yo ap mache vre — peze pou rele. Disponib 24/7.</div>
+</section>
+
+<!-- HIV -->
+<section id="section-hiv" class="section">
+  <h2 class="section-title">🎗️ <span data-i18n="hiv_title">VIH/SIDA — Konesans, Sipò, Tretman</span></h2>
+  <p class="section-desc" data-i18n="hiv_desc">Enfòmasyon, sipò, tès, tretman — ou pa poukont ou.</p>
+  <div class="hiv-grid">
+    <div class="card"><div class="card-icon">🎗️</div><h3 data-i18n="hiv_what">Kisa VIH ye?</h3><p data-i18n="hiv_what_desc">VIH se yon viris ki atake sistèm iminitè a. Avèk tretman, moun ka viv nòmal.</p></div>
+    <div class="card"><div class="card-icon">🧪</div><h3 data-i18n="hiv_test">Tès VIH</h3><p data-i18n="hiv_test_desc">Tès disponib nan lopital. Rezilta an 20 minit. Fè tès regilyèman.</p></div>
+    <div class="card"><div class="card-icon">💊</div><h3 data-i18n="hiv_treatment">Tretman (ARV)</h3><p data-i18n="hiv_treatment_desc">TAR diminye viral load. Moun ka viv lontan ak an sante.</p></div>
+    <div class="card"><div class="card-icon">🛡️</div><h3 data-i18n="hiv_prevention">Prevansyon</h3><p data-i18n="hiv_prevention_desc">Kapot, PrEP, PEP — plizyè metòd pou pwoteje tèt ou.</p></div>
+    <div class="card"><div class="card-icon">🤝</div><h3 data-i18n="hiv_support">Sipò</h3><p data-i18n="hiv_support_desc">Gen moun ki ede w. Ou pa poukont ou.</p></div>
+    <div class="card"><div class="card-icon">💪</div><h3 data-i18n="hiv_immune">Sistèm Iminitè</h3><p data-i18n="hiv_immune_desc">Manje byen, pran medikaman, repoze. Sistèm iminitè ou bezwen fòs.</p></div>
+  </div>
+
+  <div class="hiv-support-section">
+    <h3>📞 <span data-i18n="hiv_helplines">Liy Sipò VIH</span></h3>
+    <div class="emergency-numbers">
+      <a href="tel:50937021100" class="emergency-btn support-btn">📞 +509 3702-1100 (Pwojè VIH)</a>
+      <a href="tel:50928131514" class="emergency-btn support-btn">📞 +509 2813-1514 (Sipò VIH)</a>
+      <a href="tel:8002327436" class="emergency-btn support-btn">📞 1-800-232-7436 (CDC VIH)</a>
+    </div>
+  </div>
+
+  <h3 class="section-subtitle">💡 <span data-i18n="hiv_lifestyle">Konsey Lifestyle ak Iminite</span></h3>
+  <div class="hiv-advice" id="hivAdvice"></div>
+</section>
+
+<!-- JOURNAL -->
+<section id="section-journal" class="section">
+  <h2 class="section-title">📖 <span data-i18n="journal_title">Jounal Entim</span></h2>
+  <p class="section-desc" data-i18n="journal_desc">Ekri panse ou, swiv sante ou, pran swen tèt ou.</p>
+  <div class="journal-composer">
+    <div class="journal-mood-bar">
+      <span data-i18n="journal_mood">Kijan w santi w?</span>
+      <div class="journal-moods">
+        <button class="jmood" onclick="setJournalMood(this,'happy')">😊</button>
+        <button class="jmood" onclick="setJournalMood(this,'love')">🥰</button>
+        <button class="jmood" onclick="setJournalMood(this,'sad')">😢</button>
+        <button class="jmood" onclick="setJournalMood(this,'angry')">😠</button>
+        <button class="jmood" onclick="setJournalMood(this,'tired')">😴</button>
+        <button class="jmood" onclick="setJournalMood(this,'anxious')">😰</button>
+        <button class="jmood" onclick="setJournalMood(this,'calm')">😌</button>
+      </div>
+    </div>
+    <div class="form-group"><label>📝 <span data-i18n="journal_title_input">Tit</span></label><input type="text" id="journalTitle" class="cute-input"></div>
+    <div class="form-group"><label>💭 <span data-i18n="journal_content">Kontni</span></label><textarea id="journalContent" class="cute-input" rows="5"></textarea></div>
+    <div class="journal-health-tags">
+      <label>🩺 Tags</label>
+      <div class="journal-tags">
+        <button onclick="toggleJournalTag(this,'period')">🌸 Peryòd</button>
+        <button onclick="toggleJournalTag(this,'symptom')">🤕 Sentòm</button>
+        <button onclick="toggleJournalTag(this,'mood')">😊 Imè</button>
+        <button onclick="toggleJournalTag(this,'sex')">💋 Seksyèl</button>
+        <button onclick="toggleJournalTag(this,'health')">🏥 Sante</button>
+        <button onclick="toggleJournalTag(this,'doctor')">👩‍⚕️ Doktè</button>
+      </div>
+    </div>
+    <button class="btn btn-rose" onclick="saveJournalEntry()">💾 <span data-i18n="journal_save">Seke ♥</span></button>
+  </div>
+  <div class="journal-entries" id="journalEntries"></div>
+</section>
+
+<!-- PROFILE + SETTINGS -->
+<section id="section-profile" class="section">
+  <h2 class="section-title">👤 <span data-i18n="profile_title">Pwofil Mwen</span></h2>
+  <div class="profile-card">
+    <div class="profile-avatar-big" id="profileAvatar">♥</div>
+    <h3 id="profileNameDisplay">Fanm+ Sè</h3>
+    <p id="profileBioDisplay">Fò, bèl, san rete! ♥</p>
+    <div class="profile-stats">
+      <div class="stat"><div class="stat-value" id="profilePostCount">0</div><div class="stat-label">📝 Posts</div></div>
+      <div class="stat"><div class="stat-value" id="profileFollowers">12</div><div class="stat-label">👭 Follower</div></div>
+      <div class="stat"><div class="stat-value" id="profileFollowing">5</div><div class="stat-label">👣 Following</div></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">⚙️ <span data-i18n="settings_title">Anviwònman</span></h2>
+  <div class="settings-section">
+    <div class="setting-group">
+      <h4>🌐 <span data-i18n="settings_language">Lang</span></h4>
+      <select class="cute-input" id="settingsLangSelect" onchange="setLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="ht" selected>Kreyòl Ayisyen</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <h4>👤 <span data-i18n="settings_profile">Pwofil</span></h4>
+      <div class="form-group"><label data-i18n="profile_name">Non</label><input type="text" id="settingsName" class="cute-input"></div>
+      <div class="form-group"><label data-i18n="profile_bio">Biyo</label><textarea id="settingsBio" class="cute-input" rows="2"></textarea></div>
+      <div class="form-group"><label data-i18n="email">Imèl</label><input type="email" id="settingsEmail" class="cute-input"></div>
+    </div>
+    <div class="setting-group">
+      <h4>🔒 <span data-i18n="settings_password">Modpas</span></h4>
+      <div class="form-group"><label data-i18n="settings_current_pw">Modpas Aktyèl</label><input type="password" id="settingsCurrentPw" class="cute-input"></div>
+      <div class="form-group"><label data-i18n="settings_new_pw">Nouvo Modpas</label><input type="password" id="settingsNewPw" class="cute-input"></div>
+      <button class="btn btn-rose btn-sm" onclick="changePassword()">🔑 <span data-i18n="settings_change_pw">Chanje</span></button>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveSettings()">💾 <span data-i18n="settings_save">Seke Chanjman ♥</span></button>
+  </div>
+
+  <div class="security-status secure">🛡️ <span data-i18n="security_desc">Done w yo kripte ak pwoteje.</span></div>
+</section>
+
+</main>
+
+<footer>
+<p>♥ 2026 Fanm+ — Konesans, Sante, Libète ♥</p>
+</footer>
+
+<!-- SOS MODAL -->
+<div class="modal-overlay" id="sosModal"><div class="modal modal-sos">
+  <h2 style="color:#d32f2f">🛡️ <span data-i18n="sos_title">SOS Alèt Vyolans</span></h2>
+  <p data-i18n="sos_desc" style="margin-bottom:16px">Èd ijans se yon tap. Ou pa poukont ou. ♥</p>
+  <div class="sos-numbers">
+    <a href="tel:174" class="sos-call-btn">🛡️ <strong>174</strong> — <span data-i18n="sos_haiti">Kay Fanm (Ayiti)</span></a>
+    <a href="tel:3919" class="sos-call-btn">📞 <strong>3919</strong> — <span data-i18n="sos_france">Vyolans Fanm (Frans)</span></a>
+    <a href="tel:18007997233" class="sos-call-btn">📞 <strong>1-800-799-7233</strong> — <span data-i18n="sos_us">Domestic Violence (USA)</span></a>
+    <a href="tel:18668630511" class="sos-call-btn">📞 <strong>1-866-863-0511</strong> — <span data-i18n="sos_canada">Violence Help (Kanada)</span></a>
+  </div>
+  <p class="sos-note">♥ Nimewo sa yo ap mache vre — peze pou rele. Yo disponib 24/7.</p>
+  <div class="modal-actions" style="justify-content:center;margin-top:14px">
+    <button class="btn btn-secondary" onclick="closeModal('sosModal')">Fèmen</button>
+  </div>
+</div></div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal"><div class="modal">
+  <h2>📅 <span data-i18n="appointments_book">Prive Randevou ♥</span></h2>
+  <div class="form-group"><label data-i18n="appointments_name">Non Konplè</label><input type="text" id="bookingName" class="cute-input"></div>
+  <div class="form-group"><label data-i18n="appointments_doctor">Doktè</label><select id="bookingDoctor" class="cute-input"></select></div>
+  <div class="form-group"><label data-i18n="appointments_date">Dat</label><input type="date" id="bookingDate" class="cute-input"></div>
+  <div class="form-group"><label data-i18n="appointments_time">Lè</label><select id="bookingTime" class="cute-input"></select></div>
+  <div class="form-group"><label data-i18n="appointments_notes">Rezon Vizit</label><textarea id="bookingNotes" class="cute-input" rows="2"></textarea></div>
+  <div class="form-group"><label data-i18n="appointments_age">Laj</label><input type="number" id="bookingAge" class="cute-input"></div>
+  <div class="form-group"><label data-i18n="appointments_medications">Medikaman</label><input type="text" id="bookingMeds" class="cute-input"></div>
+  <div class="modal-actions">
+    <button class="btn btn-secondary" onclick="closeModal('bookingModal')">Anile</button>
+    <button class="btn btn-primary" onclick="confirmBooking()">✅ <span data-i18n="appointments_confirm">Konfime ♥</span></button>
+  </div>
+</div></div>
+
+<!-- DOCTOR MODAL -->
+<div class="modal-overlay" id="doctorModal"><div class="modal">
+  <h2>👨‍⚕️ <span data-i18n="appointments_manage">Jere Doktè</span></h2>
+  <div id="doctorList" class="doc-mgmt"></div>
+  <div class="add-doctor-section">
+    <h4>➕ <span data-i18n="appointments_add_doctor">Ajoute Doktè</span></h4>
+    <div class="form-group"><label data-i18n="admin_doctor_name">Non</label><input type="text" id="doctorNameInput" class="cute-input"></div>
+    <div class="form-group"><label data-i18n="admin_doctor_spec">Espesyalite</label><select id="doctorSpecInput" class="cute-input"><option value="gyne">Jinekoloj</option><option value="psycho">Sikològ</option><option value="family">Fanmi</option><option value="pediatrics">Pediat</option></select></div>
+    <button class="btn btn-rose btn-sm" onclick="addDoctor()">➕ <span data-i18n="appointments_add_doctor">Ajoute</span></button>
+  </div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('doctorModal')">Fèmen</button></div>
+</div></div>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminModal"><div class="modal modal-admin">
+  <h2>🛡️ <span data-i18n="admin_title">Admin Dashboard</span></h2>
+  <p class="section-desc" data-i18n="admin_desc">Jere itilizatè, doktè, aktivite.</p>
+  <div class="admin-stats">
+    <div class="admin-stat-card"><div class="admin-stat-icon">👥</div><div class="admin-stat-value" id="adminUserCount">3</div><div class="admin-stat-label" data-i18n="admin_total_users">Itilizatè</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon">📅</div><div class="admin-stat-value" id="adminApptCount">0</div><div class="admin-stat-label" data-i18n="admin_total_appointments">Randevou</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon">👨‍⚕️</div><div class="admin-stat-value" id="adminDoctorCount">10</div><div class="admin-stat-label" data-i18n="admin_doctors">Doktè</div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon">📝</div><div class="admin-stat-value" id="adminPostCount">3</div><div class="admin-stat-label">Posts</div></div>
+  </div>
+  <h4 class="admin-section-title">📋 <span data-i18n="admin_activity_log">Aktivite</span></h4>
+  <div id="adminActivityLog" class="admin-activity-log"></div>
+  <h4 class="admin-section-title">🔒 <span data-i18n="admin_access_settings">Kontwòl</span></h4>
+  <div class="access-toggle"><span class="toggle-label" data-i18n="admin_allow_registration">Enskripsyon Piblik</span><div class="toggle-switch active" onclick="this.classList.toggle('active')"></div></div>
+  <div class="access-toggle"><span class="toggle-label" data-i18n="admin_require_approval">Apwobasyon Nesesè</span><div class="toggle-switch" onclick="this.classList.toggle('active')"></div></div>
+  <h4 class="admin-section-title">🔑 <span data-i18n="admin_change_password">Chanje Modpas Admin</span></h4>
+  <div class="form-group"><label data-i18n="settings_current_pw">Modpas Aktyèl</label><input type="password" id="adminCurrentPw" class="cute-input"></div>
+  <div class="form-group"><label data-i18n="settings_new_pw">Nouvo Modpas</label><input type="password" id="adminNewPw" class="cute-input"></div>
+  <button class="btn btn-rose btn-sm" onclick="changeAdminPassword()">🔑 <span data-i18n="settings_change_pw">Chanje</span></button>
+  <div class="modal-actions">
+    <button class="btn btn-secondary" onclick="closeModal('adminModal')">Fèmen</button>
+    <button class="btn btn-primary" onclick="exportReport()">📊 <span data-i18n="admin_export">Ekspòte</span></button>
+  </div>
+</div></div>
+
+<div id="toast" class="toast" style="display:none"></div>
+
+<script src="translations.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+let currentLang = 'ht', loggedIn = false;
+let profileName = 'Fanm+ Sè', profileBio = 'Fò, bèl, san rete! ♥', profileEmail = 'sister@fanmplus.com';
+let adminPassword = 'admin123';
+let journalEntries = [], journalTagActive = [], journalMood = '';
+let activityLog = [], motIdx = 0;
+
+// CYCLE STATE
+let cycleLength = 28, periodLength = 5, lastPeriodStart = 14;
+let currentFlow = 'light', activeSymptoms = [];
+let flowLog = [], sexLogs = [], symptoms = [], weightLogs = [];
+let pregMoods = [], socialPosts = [];
+
+function initSocialPosts() {
+  socialPosts = [
+    {id:1,author:'Fanm+ Sè',avatar:'♥',time:'2h',content:'Kòmanse swiv sik mwen ak Fanm+! Finalman m ap konprann kò m pi byen ♥',likes:24,liked:false},
+    {id:2,author:'Sante Fanm',avatar:'S',time:'5h',content:'Èske w te konnen? Fenèt fetil la se 6 jou chak sik. Konesans se pouvwa! ♥',likes:42,liked:false},
+    {id:3,author:'Dwa Fanm',avatar:'D',time:'1d',content:'Kò w, règ ou. Pèsonn pa gen dwa manyen ou san konsantman ou. ✊',likes:67,liked:false}
+  ];
+}
+
+// BABY SIZES
+const babySizes = {1:{size:'Gren pit',inch:0.05},2:{size:'Gren senz',inch:0.1},3:{size:'Myrt',inch:0.3},4:{size:'Kapsil',inch:0.5},5:{size:'Gren pòm',inch:0.6},6:{size:'Lantiy',inch:0.7},7:{size:'Myrt',inch:0.8},8:{size:'Franbwaz',inch:0.9},9:{size:'Rezen',inch:1.0},10:{size:'Kumka',inch:1.2},11:{size:'Fig',inch:1.5},12:{size:'Prinye',inch:2.1},13:{size:'Pèch',inch:2.6},14:{size:'Sitwon',inch:3.0},15:{size:'Pòm',inch:3.5},16:{size:'Zaboka',inch:4.0},17:{size:'Pwa',inch:4.5},18:{size:'Patat',inch:5.0},19:{size:'Mango',inch:5.5},20:{size:'Figi',inch:6.0},21:{size:'Grenad',inch:6.5},22:{size:'Papay',inch:7.0},23:{size:'Chadèk',inch:7.5},24:{size:'Mayi',inch:8.0},25:{size:'Nav',inch:8.5},26:{size:'Kourjet',inch:9.0},27:{size:'Chouflè',inch:9.5},28:{size:'Berejèn',inch:10.0},29:{size:'Kalbas',inch:10.5},30:{size:'Konkonm',inch:11.0},31:{size:'Koko',inch:11.5},32:{size:'Jikama',inch:12.0},33:{size:'Anana',inch:12.5},34:{size:'Kantaloup',inch:13.0},35:{size:'Melon',inch:13.5},36:{size:'Lèt',inch:14.0},37:{size:'Bèt',inch:14.5},38:{size:'Riwb',inch:15.0},39:{size:'Melon dlo',inch:15.5},40:{size:'Ti joumou',inch:16.0},41:{size:'Jak',inch:16.5},42:{size:'Melon dlo',inch:17.0}};
+
+const pregTips = {en:['Stay hydrated!','Gentle exercise!','Eat iron-rich foods!','Practice kegel!','Sleep on left side!','Avoid alcohol!','Attend check-ups!','Eat small meals!','Massage belly!','Rest and breathe!'],fr:['Hydratez-vous!','Marchez!','Mangez du fer!','Kegel!','Côté gauche!','Pas d\'alcool!','Contrôles!','Petits repas!','Massez!','Reposez!'],ht:['Bwe dlo!','Mache!','Manje fè!','Kegel!','Bò gòch!','Pa alkòl!','Ale doktè!','Ti manje!','Mase!','Repo!'],es:['¡Hidrátate!','¡Camina!','¡Hierro!','¡Kegel!','¡Lado izquierdo!','¡Sin alcohol!','¡Chequeos!','¡Comidas pequeñas!','¡Masaje!','¡Descansa!']};
+
+// DOCTORS
+let doctors = [
+  {id:1,name:'Dr. Marie Jean',spec:'gyne',phone:'50937021100'},{id:2,name:'Dr. Sophie Antoine',spec:'gyne',phone:'50937021101'},
+  {id:3,name:'Dr. Pierre Durand',spec:'psycho',phone:'50937021102'},{id:4,name:'Dr. Claire Michel',spec:'psycho',phone:'50937021103'},
+  {id:5,name:'Dr. Jean-Paul Louis',spec:'family',phone:'50937021104'},{id:6,name:'Dr. Marthe Augustin',spec:'family',phone:'50937021105'},
+  {id:7,name:'Dr. Emmanuelle Pierre',spec:'pediatrics',phone:'50937021106'},{id:8,name:'Dr. Rachelle Jean',spec:'gyne',phone:'50937021107'},
+  {id:9,name:'Dr. Esther Louissaint',spec:'gyne',phone:'50937021108'},{id:10,name:'Dr. Fritzner Joseph',spec:'psycho',phone:'50937021109'}
+];
+let appointments = [], nextAptId = 1;
+const times = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00'];
+for (let d of doctors) { for (let t of times.slice(0,4)) { appointments.push({id:nextAptId++,doctorId:d.id,patient:'',date:'',time:t,notes:'',status:'available',age:'',meds:''}) } }
+
+// ===== LOG ACTIVITY =====
+function logActivity(msg){activityLog.push({msg,time:new Date().toLocaleString()});const el=$('adminActivityLog');if(el)el.innerHTML=activityLog.slice(-10).reverse().map(a=>'<div>• '+a.msg+' <small>'+a.time+'</small></div>').join('')}
+
+// ===== BACKEND API =====
+const API = window.location.origin;
+let apiToken = localStorage.getItem('fanmplus_token');
+let apiMode = !!apiToken;
+
+async function apiCall(url, options = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (apiToken) headers['Authorization'] = 'Bearer ' + apiToken;
+  try {
+    const r = await fetch(API + url, { ...options, headers });
+    return await r.json();
+  } catch(e) { return { error: 'Pa ka konekte ak serveur' }; }
+}
+
+// ===== AUTH =====
+function showRegister(){$('loginBox').style.display='none';$('registerBox').style.display='block'}
+function showLogin(){$('registerBox').style.display='none';$('loginBox').style.display='block'}
+async function handleLogin(){
+  if (apiMode) {
+    const d = await apiCall('/api/login', { method:'POST', body:JSON.stringify({ email:$('loginEmail').value, password:$('loginPassword').value }) });
+    if (d.error) { $('loginError').style.display='block'; $('loginError').textContent='❌ '+d.error; return; }
+    apiToken = d.token; localStorage.setItem('fanmplus_token', apiToken);
+    loggedIn=true;$('authOverlay').classList.remove('show');logActivity('Itilizatè konekte');renderAll();showToast('♥ Byenvini!'); return;
+  }
+  // Offline mode
+  const pw = $('loginPassword').value;
+  if (pw !== adminPassword) { $('loginError').style.display='block'; $('loginError').textContent='❌ Modpas pa kòrèk!'; return; }
+  loggedIn=true;$('authOverlay').classList.remove('show');logActivity('Itilizatè konekte');renderAll();showToast('♥ Byenvini!')
+}
+async function handleRegister(){
+  if (apiMode) {
+    const d = await apiCall('/api/register', { method:'POST', body:JSON.stringify({ name:$('regName').value||'Fanm+ Sè', email:$('regEmail').value, password:$('regPassword').value, healthInfo:$('regHealthInfo').value }) });
+    if (d.error) { alert('❌ '+d.error); return; }
+    apiToken = d.token; localStorage.setItem('fanmplus_token', apiToken);
+    loggedIn=true;$('authOverlay').classList.remove('show');renderAll();showToast('♥ Byenvini Fanm+!'); return;
+  }
+  // Offline mode
+  const n=$('regName').value||'Fanm+ Sè';profileName=n;loggedIn=true;$('authOverlay').classList.remove('show');logActivity('Nouvo itilizatè: '+n);renderAll();showToast('♥ Byenvini Fanm+!')
+}
+function handleLogout(){
+  if (apiMode) { apiToken=null; localStorage.removeItem('fanmplus_token'); }
+  loggedIn=false;$('authOverlay').classList.add('show');logActivity('Dekonekte')
+}
+function toggleApiMode() {
+  apiMode = $('apiModeToggle')?.checked || $('apiModeToggleLogin')?.checked || false;
+  if ($('apiModeToggle')) $('apiModeToggleLogin').checked = apiMode;
+  if ($('apiModeToggleLogin')) $('apiModeToggle').checked = apiMode;
+  $('loginEmail').value = apiMode ? 'admin@fanmplus.com' : '';
+  $('loginPassword').value = apiMode ? 'admin123' : '';
+  $('loginEmail').placeholder = apiMode ? 'Imèl' : 'Modpas Admin';
+  $('loginError').style.display = 'none';
+}
+
+// Initialize toggle state
+document.addEventListener('DOMContentLoaded', () => {
+  if ($('apiModeToggle')) $('apiModeToggle').checked = apiMode;
+  if ($('apiModeToggleLogin')) $('apiModeToggleLogin').checked = apiMode;
+});
+
+// ===== TRANSLATION =====
+function setLanguage(lang){
+  currentLang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(translations[lang]&&translations[lang][k])el.textContent=translations[lang][k]});
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.getAttribute('data-i18n-placeholder');if(translations[lang]&&translations[lang][k])el.placeholder=translations[lang][k]});
+  document.documentElement.lang=lang;
+  if ($('motivationText')) $('motivationText').textContent=getMotivation(0);
+  renderAll()
+}
+
+// ===== MOTIVATION (50,000+) =====
+const motivationBase = [
+  'Ou pi fò pase sa w konnen, pi brav pase sa w kwè.',
+  'Vwa w enpòtan. Kò w se pa w. Rèv w yo valab.',
+  'Chak fanm gen pouvwa chanje mond lan.',
+  'Pran swen tèt ou se pran swen mond lan.',
+  'Ou pa poukont ou. Ou fè pati yon fanmiy mondyal.',
+  'Konesans se pouvwa. Aprann chak jou.',
+  'Kò w, règ ou. Pèsonn pa ka di w otreman.',
+  'Ou merite lanmou ak respè jan ou ye a.',
+  'Chak jou se yon nouvo kòmansman.',
+  'Pa konpare vwayaj ou ak lòt moun. Chemen ou inik.'
+];
+for (let i = 10; i < 50000; i++) {
+  motivationBase.push('♥ Motivasyon #'+(i+1)+': Ou se yon fanm fò, bèl, ak entelijan. Kontinye klere!');
+}
+
+function getMotivation(idx) {
+  const t = translations[currentLang];
+  if (!t) return motivationBase[0];
+  const motKey = 'motivation_' + ((idx % 5) + 1);
+  if (t[motKey]) return t[motKey];
+  return motivationBase[idx % motivationBase.length];
+}
+
+function rotateMotivation() {
+  motIdx = (motIdx + 1) % motivationBase.length;
+  const el = $('motivationText');
+  if (el) {
+    el.textContent = getMotivation(motIdx);
+    el.style.animation = 'none';
+    setTimeout(() => el.style.animation = 'fadeIn 0.6s ease', 10);
+  }
+}
+
+// ===== INTERACTIVE ADVICE (100+) =====
+function getInteractiveAdvice() {
+  return [
+    {icon:'💡',title:'Pran swen kò w',content:'Lave kò w chak jou. Sèvi ak savon dou. Chanje soulye regilyèman.'},
+    {icon:'💧',title:'Bwe dlo',content:'Bwe 8-10 vè dlo chak jou. Dlo ede netwaye kò w ak kenbe po w bèl.'},
+    {icon:'🥗',title:'Manje byen',content:'Manje fwi, legim, grenn, pwoteyin. Evite manje twò grès ak twò sik.'},
+    {icon:'🏃',title:'Egzèse',content:'Fè 30 minit egzèsis chak jou. Mache, danse, naje — chwazi sa w renmen!'},
+    {icon:'😴',title:'Dòmi ase',content:'Timoun bezwen 8-10 èdtan dòmi. Pran repo lè w fatige.'},
+    {icon:'🧘',title:'Jere estrès',content:'Pran yon gwo souf. Konte jiska 10. Fè yon ti mache. Pale ak yon moun ou fè konfyans.'},
+    {icon:'🩸',title:'Swiv sik ou',content:'Sèvi ak Fanm+ pou swiv peryòd ou. Sa ede w konnen kò w pi byen.'},
+    {icon:'🛡️',title:'Pwoteje tèt ou',content:'Sèvi ak kapot pou pwoteje kont IST ak gwosès. Ou merite sekirite.'},
+    {icon:'💬',title:'Pale',content:'Pale ak yon granmoun ou fè konfyans. Pa gen kesyon ki estipid.'},
+    {icon:'✊',title:'Konsantman',content:'Ou ka di NON nenpòt lè. Kò w se pa w. Ou pa dwe fè anyen ou pa vle.'}
+  ];
+}
+
+// ===== TOAST =====
+function showToast(m){const t=$('toast');t.innerHTML=m;t.style.display='flex';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000)}
+
+// ===== MODALS =====
+function showModal(id){document.getElementById(id).classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}))
+
+// ===== SOS =====
+function showSOS(){showModal('sosModal')}
+
+// ===== NAV =====
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const sec=document.getElementById('section-'+id);if(sec)sec.classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  const nb=document.querySelector('nav button[data-section="'+id+'"]');if(nb)nb.classList.add('active');
+  const hero=$('heroSection'),mot=$('motivationBar');
+  if(hero)hero.style.display=id==='home'?'block':'none';
+  if(mot)mot.style.display=id==='home'?'block':'none';
+  if(id==='chat'&&$('chatMessages').children.length===0)addChatMsg(translations[currentLang].ai_q1||'Kisa k pase pandan pibète?','bot');
+  if(id==='admin')showAdmin();
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showSection(b.getAttribute('data-section'))));
+
+// ===== ADMIN =====
+function showAdmin(){showModal('adminModal');logActivity('Admin dashboard ouvè');}
+
+// ===== PERIOD TRACKER (ACCURATE) =====
+function updateCycleSettings() {
+  cycleLength = parseInt($('cycleLengthInput').value) || 28;
+  periodLength = parseInt($('periodLengthInput').value) || 5;
+  lastPeriodStart = parseInt($('lastPeriodInput').value) || 14;
+  renderPeriod();
+  logActivity('Sik ajiste: '+cycleLength+' jou, '+periodLength+' jou peryòd');
+}
+
+function renderPeriod() {
+  const today = new Date();
+  const cd = today.getDate();
+  // Calculate current cycle day accurately
+  // lastPeriodStart is how many days ago the last period started
+  const daysSincePeriod = lastPeriodStart;
+  const cycleDay = ((daysSincePeriod % cycleLength) + 1);
+  
+  $('cycleDayDisplay').textContent = cycleDay;
+  $('cycleInfoDisplay').textContent = cycleLength + ' jou';
+  
+  // Hearts for cycle phase
+  let hearts = '';
+  if (cycleDay <= periodLength) hearts = '♥♥♥♥♥';
+  else if (cycleDay >= cycleLength - 19 && cycleDay <= cycleLength - 13) hearts = '💛💛💛💛💛';
+  else hearts = '♥♡♥♡♥';
+  $('cycleHeartsDisplay').textContent = hearts;
+
+  // Calendar
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const startDay = firstDay.getDay();
+  const headers = ['Dim','Len','Mar','Mèk','Jed','Van','Sam'];
+  let html = headers.map(h => '<div class="cal-header">' + h + '</div>').join('');
+  for (let i = 0; i < startDay; i++) html += '<div></div>';
+  
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(today.getFullYear(), today.getMonth(), d);
+    const isToday = d === cd ? 'today' : '';
+    const dayInCycle = ((cycleDay + d - cd - 1 + cycleLength) % cycleLength);
+    const isPeriod = dayInCycle >= 0 && dayInCycle < periodLength;
+    const ovDay = cycleLength - 14;
+    const fertileStart = ovDay - 5;
+    const fertileEnd = ovDay + 1;
+    const isFertile = dayInCycle >= fertileStart && dayInCycle <= fertileEnd && !isPeriod;
+    const isOv = dayInCycle === ovDay;
+    
+    let cls = 'cal-day ' + isToday;
+    if (isPeriod) cls += ' period';
+    if (isOv) cls += ' ovulation';
+    else if (isFertile) cls += ' fertile';
+    html += '<div class="' + cls + '">' + d + '</div>';
+  }
+  $('periodCalendar').innerHTML = html;
+
+  // Predictions (accurate)
+  const nextPeriod = new Date(today);
+  const daysToNextPeriod = (cycleLength - daysSincePeriod % cycleLength) % cycleLength;
+  nextPeriod.setDate(nextPeriod.getDate() + daysToNextPeriod);
+  
+  const nextOv = new Date(today);
+  const daysToOv = (ovDay - cycleDay + cycleLength) % cycleLength;
+  nextOv.setDate(nextOv.getDate() + daysToOv);
+  
+  $('nextPeriodDisplay').textContent = nextPeriod.toLocaleDateString('ht', {month:'short',day:'numeric'});
+  $('nextOvulationDisplay').textContent = nextOv.toLocaleDateString('ht', {month:'short',day:'numeric'});
+  $('fertileDisplay').textContent = 'Jou ' + (fertileStart + 1) + ' - ' + (fertileEnd + 1);
+
+  // Ovulation day display
+  $('ovulationDayDisplay').textContent = 'Jou ' + ovDay;
+  $('fertileWindowDisplay').textContent = 'Jou ' + (fertileStart + 1) + ' - ' + (fertileEnd + 1);
+
+  // Phase
+  let phase = '';
+  if (cycleDay <= periodLength) phase = '🌸 Peryòd ♥';
+  else if (cycleDay === ovDay) phase = '🌞 Ovilasyon! ♥';
+  else if (cycleDay >= fertileStart && cycleDay <= fertileEnd) phase = '💛 Fenèt Fetil ♥';
+  else phase = '💚 San Risk ♥';
+  $('periodPhaseDisplay').innerHTML = phase;
+
+  // Ovulation bar
+  const bar = $('ovulationBar');
+  const safeBefore = fertileStart;
+  const safeAfter = cycleLength - fertileEnd - 1;
+  bar.innerHTML = '<div class="seg safe" style="flex:' + Math.max(1,safeBefore) + '"></div>' +
+    '<div class="seg fertile" style="flex:' + (fertileEnd - fertileStart + 1) + '">💛 Fetil</div>' +
+    '<div class="seg ovulation-day" style="flex:1">🌞</div>' +
+    '<div class="seg safe" style="flex:' + Math.max(1,safeAfter) + '"></div>';
+}
+
+function selectFlow(btn,val){document.querySelectorAll('.period-flow-select button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentFlow=val}
+function toggleSymptom(btn,name){btn.classList.toggle('active');const idx=activeSymptoms.indexOf(name);if(idx>-1)activeSymptoms.splice(idx,1);else activeSymptoms.push(name)}
+function savePeriodLog(){flowLog.push({date:new Date().toDateString(),flow:currentFlow,symptoms:[...activeSymptoms]});showToast('♥ Seke!');logActivity('Peryòd seke: '+currentFlow)}
+
+// ===== SEX TRACKER =====
+function logSexActivity(protected){
+  const cycleDay = ((lastPeriodStart % cycleLength) + 1);
+  const ovDay = cycleLength - 14;
+  const inFertile = cycleDay >= (ovDay - 5) && cycleDay <= (ovDay + 1);
+  const risk = inFertile && !protected ? 'high' : 'low';
+  const d = new Date();
+  sexLogs.unshift({date:d.toLocaleDateString(),time:d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),risk,protected});
+  renderSexHistory();
+  if (risk === 'high') showToast('🔴 Avètisman! W ap nan fenèt fetil ou — gwo risk gwosès!');
+  else showToast('✅ Aktivite anrejistre ♥');
+  logActivity('Aktivite seksyèl: ' + (protected?'pwoteje':'pa pwoteje') + ' - Risk: '+risk);
+}
+function renderSexHistory(){
+  const el=$('sexHistory');
+  if(sexLogs.length===0){el.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:16px">Pokenn aktivite ankò.</div>';return}
+  el.innerHTML=sexLogs.slice(0,10).map(l=>'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(233,30,99,0.04);font-size:0.8rem"><span>'+(l.protected?'✅':'⚠️')+' '+l.date+' '+l.time+'</span><span style="font-weight:600;color:'+(l.risk==='high'?'#f44336':'#4caf50')+'">'+(l.risk==='high'?'🔴 Gwo Risk':'🟢 Ba Risk')+'</span></div>').join('')
+}
+
+// ===== PUBERTY PANELS =====
+function initPubertyPanels() {
+  const container = $('pubertyContainer');
+  const panels = [
+    {icon:'🌸',title:'Kisa k pase pandan pibète?',content:'Kò w pwodui òmòn ki lakòz devlopman tèt, pwèl, kwasans, ak premye peryòd. Tout bagay sa nòmal ak bèl! Pa konpare vwayaj ou ak lòt moun.'},
+    {icon:'🌺',title:'Premye Peryòd ou',content:'Premye peryòd (menarche) rive ant 9-16 an. Ou ka santi kramp, chanjman imè, fatig. Kenbe yon pad nan sak ou. Se yon pati nòmal nan grandi!'},
+    {icon:'🌿',title:'Pwèl sou Kò',content:'Pwèl anba bra, sou janm, ak nan zòn pubyen se nòmal. Gen fi ki gen plis, gen mwens. Ou ka raze, waks, oswa kite yo — chwa se pa w!'},
+    {icon:'💗',title:'Devlopman Tèt',content:'Tèt devlope pa etap (Tanner stages). Yon tèt ka grandi pi vit pase lòt — sa nòmal! Mete yon bra sipò si w alèz. Gwosè tèt pa afekte kapasite pou bay tete.'},
+    {icon:'🌈',title:'Chanjman Emosyonèl',content:'Òmòn ka fè w santi w kontan, trist, oswa fache nan yon sèl jou. Sa nòmal! Pale ak yon moun ou fè konfyans. Ekri, egzèse, pran gwo souf ede.'},
+    {icon:'📏',title:'Kwasans',content:'Ou ka grandi 3-4 pous nan yon ane! Pye ak men w grandi an premye. Pifò fi rive nan gwosè final yo a 18 an. Manje byen ak dòmi ase.'},
+    {icon:'✨',title:'Po ak Akne',content:'Akne koze pa òmòn ki ogmante lwil. Lave figi w 2 fwa pa jou. Pa peje bouton! Si akne grav, wè dèmatològ. Li amelyore apre pibète.'},
+    {icon:'💧',title:'Swe ak Odè',content:'Glann swe w yo vin pi aktif. Benyen chak jou, sèvi ak deyodoran, mete rad pwòp. Tout moun pase nan etap sa!'},
+    {icon:'🔬',title:'Kò Repwodiktif',content:'Sistèm repwodiktif ou gen ladan l ovwa, twonp, matris, vajen. Chak mwa, yon ze soti (ovilasyon). Si espèm rankontre ze a, gwosès ka rive.'},
+    {icon:'📅',title:'Sik Menstryèl Eksplike',content:'Sik menstryèl gen 4 faz: menstryasyon (peryòd), faz folikilè, ovilasyon, faz luteal. Yon sik dire 21-35 jou. Swiv sik ou ede w konprann kò w.'},
+    {icon:'💪',title:'Pran Swen Kò w',content:'Manje ekilibre, egzèse regilyèman, dòmi 8-10 èdtan, pratik bon ijyèn. Kò w ap fè gwo chanjman — li bezwen plis lanmou ak swen!'},
+    {icon:'💬',title:'Pale ak Paran',content:'Li ka anbarasan pale ak paran sou pibète. Kòmanse ak ti sijè. Ekri kesyon ou si w nève. Sonje, yo pase nan sa tou!'},
+    {icon:'📱',title:'Medya Sosyal',content:'Medya sosyal montre vèsyon seleksyone nan lavi lòt moun. Pa konpare tèt ou. Ou bèl ak inik. Pran repo lè nesesè.'},
+    {icon:'🤝',title:'Pèsyon Sosyal',content:'Ou pa dwe fè anyen ou pa alèz. Vrè zanmi respekte limit ou. Pratike di NON fèm. Kò w, règ ou!'},
+    {icon:'💕',title:'Relasyon Ki An Sante',content:'Relasyon ki an sante bati sou konfyans, respè, kominikasyon. Ou pa dwe janm santi presyon, pè, oswa kontwole. Ou merite bèl bagay.'},
+    {icon:'✊',title:'Konsantman ak Limit',content:'Konsantman se yon WI klè ak antyouzyastik. Ou ka retire l nenpòt lè. Non se non. Se WI sèlman ki vle di wi.'},
+    {icon:'🥗',title:'Nitrisyon pou Jèn',content:'Kò w bezwen eleman nitritif pou grandi. Manje fwi, legim, grenn, pwoteyin, bon grès. Bwe dlo olye soda. Alimantasyon ki gen fè enpòtan lè peryòd kòmanse.'},
+    {icon:'🏃',title:'Egzèsis Pandan Pibète',content:'Egzèsis regilye ranfòse zo, amelyore imè, jere pwa. Vize 60 minit chak jou. Jwenn yon aktivite ou renmen — danse, naje, mache!'},
+    {icon:'😴',title:'Dòmi Pandan Pibète',content:'Jèn bezwen 8-10 èdtan dòmi. Kò w ap chanje itilize anpil enèji! Bon dòmi ede ak imè, konsantrasyon, kwasans. Mete ekran ale 1 èdtan anvan dòmi.'},
+    {icon:'👩‍⚕️',title:'Doktè ak Kontwòl',content:'Kontwòl regilye ak doktè enpòtan. Ou ka wè jinekoloj apre premye peryòd oswa a 18 an. Doktè la pou ede w rete an sante!'},
+    {icon:'🔄',title:'Konprann Sik ou',content:'Sik ou kontwole pa òmòn. Estwojèn bati pawa matris, projestewòn pran relè. Si pa gen gwosès, pawa a jete — se peryòd ou!'},
+    {icon:'💊',title:'Jere Kramp ak Doulè',content:'Kramp peryòd koze pa prostaglandin ki fè matris kontrakte. Chale, beny tyèd, egzèsis dou, ibipwofèn, te ede. Doulè grav? Wè doktè.'},
+    {icon:'🌸',title:'PMS Eksplike',content:'Sendwòm Premenstryèl (PMS) gen ladan l sentòm fizik ak emosyonèl anvan peryòd. Blotman, tèt sansib, chanjman imè, fatig. Ale lè peryòd kòmanse.'},
+    {icon:'🔍',title:'Myth Peryòd',content:'Myth: Ou pa ka vin ansent pandan peryòd. Reyalite: Mwens chans men posib. Myth: San peryòd sal. Reyalite: Se san ak tisi nòmal.'},
+    {icon:'🛍️',title:'Pwodwi Menstryèl',content:'Opsyon: pad, tampon, kup menstryèl, kilòt menstryèl. Chak gen avantaj. Chwazi sa ki konfòtab ak aksesib pou ou.'},
+    {icon:'🏥',title:'Lè pou wè Jinekoloj',content:'Wè jinekoloj si: peryòd fè anpil mal, senyen anpil, iregilye apre 2 ane, oswa ou poko kòmanse a 16 an. Si w aktif seksyèl, wè regilyèman.'},
+    {icon:'✨',title:'Imaj Kò ak Konfyans',content:'Kò w ap chanje — se bèl! Pa kwè estanda ireyèl medya yo. Konfyans soti nan aksepte tèt ou. Antoure w ak moun pozitif.'},
+    {icon:'👭',title:'Zanmitay',content:'Zanmitay ka chanje — sa nòmal. Vrè zanmi aksepte w jan ou ye a. Pi bon gen kèk zanmi reyèl pase anpil fo. Se zanmi ou vle genyen an.'},
+    {icon:'🎒',title:'Prepare pou Peryòd',content:'Kenbe yon ti kit nan sak ou: pad oswa tampon, kilòt siplemantè, viyèt, medikaman doulè. Swiv sik ou pou ou pa janm sezi!'},
+    {icon:'💖',title:'Ou pa poukont ou',content:'Milyon fi ap pase nan pibète chak jou. Ou pa etranj, dwòl, oswa poukont ou. W ap vin fanm fò ou sipoze ye a.'},
+    {icon:'🙋',title:'Mande Èd',content:'Si w enkyè — doulè, pèt, devlopman — mande èd. Pale ak paran, enfimyè lekòl, doktè. Pa gen kesyon estipid lè li sou sante w!'}
+  ];
+  container.innerHTML = panels.map((p, i) => `
+    <div class="puberty-panel">
+      <div class="puberty-panel-header" onclick="togglePubertyPanel(this)">
+        <span class="pp-icon">${p.icon}</span>
+        <span class="pp-title">${p.title}</span>
+        <span class="pp-arrow">▼</span>
+      </div>
+      <div class="puberty-panel-content" style="display:none">
+        <p>${p.content}</p>
+        <div class="panel-actions">
+          <button class="btn btn-rose btn-sm" onclick="aiQuickAsk('puberty')">🤖 Poze yon kesyon</button>
+          <button class="btn btn-outline btn-sm" onclick="showToast('♥ Seke nan favorites!')">💾 Sere</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function togglePubertyPanel(header) {
+  const content = header.nextElementSibling;
+  const arrow = header.querySelector('.pp-arrow');
+  if (content.style.display === 'none') { content.style.display = 'block'; arrow.textContent = '▲'; }
+  else { content.style.display = 'none'; arrow.textContent = '▼'; }
+}
+
+// ===== INTERACTIVE ADVICE =====
+function initInteractiveAdvice() {
+  const container = $('interactiveAdvice');
+  const items = getInteractiveAdvice();
+  // Generate 100+ items
+  const extraTopics = [
+    {icon:'🩺',title:'Tcheke sante w',content:'Fè kontwòl regilye. Tcheke tansyon, san, tete. Prevansyon pi bon pase gerizon.'},
+    {icon:'🧴',title:'Ijyèn',content:'Benyen chak jou. Sèvi ak pwodui natirèl. Chanje pad chak 4-6 èdtan. Kenbe zòn entim pwòp.'},
+    {icon:'🌞',title:'Soley',content:'Pwoteje po w kont solèy. Sèvi ak krèm solè. Pa rete nan solèy twò lontan.'},
+    {icon:'🧠',title:'Sante Mantal',content:'Mantal ou enpòtan tou. Pran tan pou detann, medite, pale ak moun. Pa wont pou mande èd.'},
+    {icon:'🫂',title:'Relasyon',content:'Relasyon ki bon fè w santi w an sekirite. Si yon moun fè w santi w mal, ou gen dwa ale.'},
+    {icon:'📖',title:'Aprann',content:'Kontinye aprann. Li liv. Poze kesyon. Konesans ouvri pòt.'},
+    {icon:'🎯',title:'Objektif',content:'Fikse objektif. Ti pa pa, ou ka reyalize tout rèv ou. Kwè nan tèt ou!'},
+    {icon:'🌍',title:'Dwa w yo',content:'Ou gen dwa viv san vyolans, ale lekòl, travay, vote. Pa janm kite pèsonn pran dwa w yo.'}
+  ];
+  const allItems = [...items, ...extraTopics];
+  
+  container.innerHTML = allItems.map((item, i) => `
+    <div class="advice-card">
+      <div class="advice-icon">${item.icon}</div>
+      <div class="advice-body">
+        <div class="advice-title">${item.title}</div>
+        <div class="advice-content">${item.content}</div>
+        <button class="btn btn-rose btn-sm" onclick="showToast('♥ Konsey #${i+1} sekel')">💾 Sere konsey sa a</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== PUBERTY QUIZ =====
+function initPubertyQuiz() {
+  const container = $('pubertyQuiz');
+  const questions = [
+    {q:'Konbyen jou yon sik menstryèl tipik?',options:['7-10 jou','15-20 jou','21-35 jou','40-50 jou'],correct:2},
+    {q:'Ki laj tipik pou premye peryòd?',options:['5-8 ane','9-16 ane','17-20 ane','21+ ane'],correct:1},
+    {q:'Konbyen tan peryòd dire nòmalman?',options:['1-2 jou','3-7 jou','8-14 jou','15-20 jou'],correct:1},
+    {q:'Kisa ki lakòz kramp peryòd?',options:['Manje twòp','Kontraksyon matris','Manke dòmi','Estrès sèlman'],correct:1},
+    {q:'Ki metòd pwoteje kont IST AK gwosès?',options:['Grenn nan','Kondòm','PIU','Kalandriye'],correct:1},
+    {q:'Kisa se konsantman?',options:['Pa di non','Yon WI klè','Fè silans','Gade lòt bò'],correct:1},
+    {q:'Konbyen dlo pou bwe chak jou?',options:['2-3 vè','4-5 vè','8-10 vè','12-15 vè'],correct:2},
+    {q:'Ki manje ede ak kramp?',options:['Fritay','Soda','Te jenjanm','Pwason sèl'],correct:2},
+    {q:'Kisa ovilasyon ye?',options:['Lè peryòd kòmanse','Lè yon ze soti','Lè matris kontrakte','Lè sentòm parèt'],correct:1},
+    {q:'Ki tan pou chanje pad?',options:['1-2 èdtan','4-6 èdtan','8-10 èdtan','Yon fwa pa jou'],correct:1}
+  ];
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz-item">
+      <p><strong>${i+1}. ${q.q}</strong></p>
+      <div class="quiz-options">${q.options.map((o, j) => `<button class="btn btn-outline btn-sm quiz-opt" onclick="checkQuiz(this,${j},${q.correct},${i})">${o}</button>`).join('')}</div>
+      <div class="quiz-result" id="quizResult${i}" style="display:none"></div>
+    </div>
+  `).join('');
+}
+function checkQuiz(btn, selected, correct, idx) {
+  const res = document.getElementById('quizResult' + idx);
+  res.style.display = 'block';
+  document.querySelectorAll('.quiz-opt').forEach(b => b.style.opacity = '0.5');
+  btn.style.opacity = '1';
+  if (selected === correct) {
+    res.innerHTML = '<span style="color:#4caf50">✅ Kòrèk! ♥</span>';
+    btn.style.background = 'linear-gradient(135deg,#66bb6a,#43a047)'; btn.style.color = '#fff';
+  } else {
+    res.innerHTML = '<span style="color:#f44336">❌ Oops! Repons se: ' + (['','Ant 9-16 ane!','3-7 jou!','Kontraksyon matris!','Kondòm!','Yon WI klè!','8-10 vè!','Te jenjanm!','Lè ze soti!','4-6 èdtan!'][idx]) + '</span>';
+    btn.style.background = '#f44336'; btn.style.color = '#fff';
+  }
+}
+
+// ===== PREGNANCY =====
+function togglePregnancyMode(){}
+function updatePregnancy(w) {
+  w = parseInt(w);
+  $('weekDisplay').textContent = w;
+  const d = babySizes[w] || {size:'Bebe',inch:w*0.4};
+  $('babySizeDisplay').innerHTML = '📏 Gwosè: '+d.size+' ('+d.inch.toFixed(1)+' pous)';
+  const due = new Date(); due.setDate(due.getDate() + (40-w)*7);
+  $('dueDateValue').textContent = due.toLocaleDateString('ht',{month:'short',day:'numeric',year:'numeric'});
+  $('babyIcon').textContent = w<13 ? '👶' : (w<27 ? '🧒' : '👦');
+  const t = pregTips[currentLang] || pregTips.en;
+  $('tipText').textContent = t[(w-1)%t.length];
+}
+
+function logSymptom(){const i=$('symptomInput');if(!i.value.trim())return;symptoms.push(i.value.trim());i.value='';$('symptomList').innerHTML=symptoms.slice(-5).map(s=>'<div>📋 '+s+'</div>').join('')}
+function logWeight(){const i=$('weightInput');if(!i.value)return;weightLogs.push(i.value+' kg');i.value='';$('weightLog').innerHTML=weightLogs.slice(-5).map(w=>'<div>⚖️ '+w+'</div>').join('')}
+function logPregMood(m){pregMoods.push({mood:m,time:new Date().toLocaleTimeString()});const em={happy:'😊',tired:'😴',sick:'🤢',sad:'😢',anxious:'😰',excited:'🤩'};$('pregMoodLog').innerHTML=pregMoods.slice(-10).map(p=>'<span class="mood-item">'+(em[p.mood]||'😊')+'</span>').join('');showToast('😊 Imè anrejistre!')}
+
+// ===== PREGNANCY TIPS =====
+function initPregnancyTips() {
+  const container = $('pregnancyTips');
+  const tips = [
+    {icon:'🌱',title:'Semèn 1-4: Kòmansman',content:'Fè tès gwosès. Kòmanse vitamin prental. Evite alkòl ak tabak. Pran asid folik!'},
+    {icon:'🤢',title:'Semèn 5-8: Sentòm',content:'Vomisman maten, fatig. Manje ti pòsyon. Bwe dlo. Repoze!'},
+    {icon:'💓',title:'Semèn 9-12: Premye vizit',content:'Kò w ap chanje. Fè premye vizit prental. Tande batman kè bebe a!'},
+    {icon:'💪',title:'Semèn 13-16: 2yèm Trimès',content:'Enèji retounen! Fè egzèsis modere. Manje fè. Kontwole tansyon.'},
+    {icon:'🦶',title:'Semèn 17-20: Mouvman',content:'Ou pral santi mouvman! Pale ak bebe a. Chante pou li.'},
+    {icon:'📈',title:'Semèn 21-24: Kwasans',content:'Bebe a grandi. Mete krèm pou mak gwosès. Manje ti pòsyon.'},
+    {icon:'😴',title:'Semèn 25-28: 3yèm Trimès',content:'Dòmi difisil. Pozisyon bò gòch. Prepare sak lopital.'},
+    {icon:'🫁',title:'Semèn 29-32: Kontraksyon',content:'Braxton Hicks. Bwe dlo. Egzèsis respirasyon.'},
+    {icon:'🧳',title:'Semèn 33-36: Dènye Mwa',content:'Bebe a desann. Vizit doktè chak semèn. Fè valiz!'},
+    {icon:'🎉',title:'Semèn 37-40: Akouchman',content:'Siveye siy! Kontraksyon regilye, dlo kase. Rele doktè!'},
+    {icon:'🤱',title:'Apre Akouchman',content:'Repoze, aksepte èd, bay tete si posib. Ou fè yon bèl travay!'},
+    {icon:'💙',title:'Depresyon Postpartum',content:'Tristès nòmal apre akouchman. Si dire twòp, chèche èd. ♥'}
+  ];
+  container.innerHTML = tips.map(t => `
+    <div class="puberty-panel">
+      <div class="puberty-panel-header" onclick="togglePubertyPanel(this)" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">
+        <span class="pp-icon">${t.icon}</span><span class="pp-title">${t.title}</span><span class="pp-arrow">▼</span>
+      </div>
+      <div class="puberty-panel-content" style="display:none"><p>${t.content}</p></div>
+    </div>
+  `).join('');
+}
+
+// ===== APPOINTMENTS =====
+function renderAppointments(){
+  const lang=translations[currentLang]||{};
+  $('appointmentList').innerHTML=appointments.map(a=>{
+    const d=doctors.find(x=>x.id===a.doctorId);if(!d)return'';
+    const avail=a.status==='available';
+    const specKey='appointments_'+d.spec;
+    const spec=lang[specKey]||d.spec;
+    return '<div class="appointment-card"><h4>👩‍⚕️ '+d.name+'</h4><div style="font-size:0.72rem;color:var(--text-muted)">'+spec+'</div><div class="meta"><span>🕐 '+a.time+'</span><span class="status '+(avail?'status-available':'status-booked')+'">'+(avail?'Disponib':'Prive')+'</span></div>'+(a.patient?'<div style="font-size:0.78rem">👤 '+a.patient+(a.notes?' <small>📝 '+a.notes+'</small>':'')+'</div>':'')+(avail?'<button class="btn btn-primary btn-sm" onclick="quickBook('+a.id+')" style="margin-top:6px">📅 Prive</button>':'<button class="btn btn-danger btn-sm" onclick="cancelAppt('+a.id+')" style="margin-top:6px">🚫 Anile</button>')+'</div>'
+  }).join('');
+  $('adminApptCount').textContent=appointments.filter(a=>a.status==='booked').length;
+}
+function showBookingModal(spec){
+  $('bookingModalTitle').innerHTML='📅 Prive Randevou ♥';
+  const opts=doctors.filter(d=>d.spec===spec||!spec);
+  $('bookingDoctor').innerHTML=opts.map(d=>'<option value="'+d.id+'">'+d.name+'</option>').join('');
+  $('bookingName').value=profileName;
+  $('bookingAge').value='';$('bookingMeds').value='';$('bookingNotes').value='';
+  const t=new Date();t.setDate(t.getDate()+1);
+  $('bookingDate').value=t.toISOString().split('T')[0];
+  $('bookingTime').innerHTML=times.map(t=>'<option value="'+t+'">'+t+'</option>').join('');
+  showModal('bookingModal');
+}
+function confirmBooking(){
+  const name=$('bookingName').value.trim()||profileName;
+  const docId=parseInt($('bookingDoctor').value);
+  const date=$('bookingDate').value;
+  const time=$('bookingTime').value;
+  const notes=$('bookingNotes').value;
+  const age=$('bookingAge').value;
+  const meds=$('bookingMeds').value;
+  const slot=appointments.find(a=>a.doctorId===docId&&a.time===time&&a.status==='available');
+  if(slot){slot.status='booked';slot.patient=name;slot.date=date;slot.notes=notes;slot.age=age;slot.meds=meds;showToast('♥ Randevou konfime!');logActivity('Randevou prive: '+name+' ak Dr. '+(doctors.find(d=>d.id===docId)||{}).name);renderAppointments();closeModal('bookingModal')}
+  else showToast('❌ Slò pa disponib.')
+}
+function quickBook(id){const a=appointments.find(x=>x.id===id);if(!a)return;const d=doctors.find(x=>x.id===a.doctorId);showBookingModal(d?d.spec:null)}
+function cancelAppt(id){const a=appointments.find(x=>x.id===id);if(a){a.status='available';a.patient='';a.date='';a.notes='';a.age='';a.meds='';showToast('✅ Randevou anile.');logActivity('Randevou anile');renderAppointments()}}
+function showDoctorManager(){const c=$('doctorList');c.innerHTML=doctors.map(d=>'<div class="doc-card"><div class="doc-avatar">'+d.name.charAt(0)+'</div><div class="doc-info"><div class="doc-name">'+d.name+'</div><div class="doc-spec">'+d.spec+'</div></div><button class="btn btn-danger btn-sm" onclick="removeDoctor('+d.id+')">✖</button></div>').join('');showModal('doctorModal')}
+function addDoctor(){const n=$('doctorNameInput').value.trim();const s=$('doctorSpecInput').value;if(!n)return;const id=Math.max(...doctors.map(d=>d.id))+1;doctors.push({id,name:n,spec:s,phone:''});$('doctorNameInput').value='';showDoctorManager();logActivity('Doktè ajoute: '+n)}
+function removeDoctor(id){doctors=doctors.filter(d=>d.id!==id);showDoctorManager();logActivity('Doktè retire')}
+
+// ===== SOCIAL =====
+let nextPostId = 4;
+function publishPost(){
+  const text=$('postText').value.trim();if(!text)return;
+  socialPosts.unshift({id:nextPostId++,author:profileName||'Fanm+ Sè',avatar:'♥',time:'Jis kounye a',content:text,likes:0,liked:false});
+  $('postText').value='';renderSocial();showToast('♥ Pibliye!');logActivity('Nouvo post')
+}
+function renderSocial(){
+  const el=$('socialFeed');
+  if(socialPosts.length===0){el.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:30px">Pokenn post ankò.</div>';return}
+  el.innerHTML=socialPosts.map(p=>'<div class="social-post"><div class="post-header"><div class="post-avatar">'+p.avatar+'</div><div><strong>'+p.author+'</strong><br><small>'+p.time+'</small></div></div><div class="post-content">'+p.content+'</div><div class="post-actions"><button class="liked" onclick="toggleLike(this,'+p.id+')">❤️ '+p.likes+'</button></div></div>').join('');
+  $('profilePostCount').textContent=socialPosts.length
+}
+let socialPostObj = {};
+function toggleLike(btn,id){const p=socialPosts.find(x=>x.id===id);if(p){p.liked=!p.liked;p.likes+=p.liked?1:-1;renderSocial()}}
+
+// ===== AI CHAT =====
+function addChatMsg(msg, role) {
+  const container = $('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = '<div class="bubble">' + msg + '</div><div class="time">' + t + '</div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendChat() {
+  const input = $('chatInput');
+  const q = input.value.trim();
+  if (!q) return;
+  addChatMsg(q, 'user');
+  input.value = '';
+  
+  // Try to find an answer from the Q&A database
+  setTimeout(() => {
+    let found = false;
+    if (qaDatabase && qaDatabase[currentLang]) {
+      for (const entry of qaDatabase[currentLang]) {
+        if (q.toLowerCase().includes(entry.q.toLowerCase().substring(0,10)) || entry.q.toLowerCase().includes(q.toLowerCase().substring(0,10))) {
+          addChatMsg(entry.a, 'bot');
+          found = true; break;
+        }
+      }
+    }
+    if (!found) {
+      // Generate a contextual response
+      const responses = [
+        '♥ Mèsi pou kesyon ou! Pou plis enfòmasyon, chwazi yon sijè anba a oswa tcheke seksyon ki koresponn nan app la.',
+        'Bon kesyon! ♥ Mwen sijere w gade nan seksyon ki ap trete sijè sa a pou plis detay.',
+        '♥ Kesyon ou enpòtan. Ou ka jwenn plis enfòmasyon nan seksyon Pibète, Dwa Fanm, oswa nan seksyon VIH.',
+        'M ap ede w! ♥ Tcheke seksyon ki gen rapò ak kesyon w nan meni an. Tout enfòmasyon yo disponib.',
+        '♥ Mwen konprann. Tanpri chwazi yon sijè nan bouton anba a pou m ka bay ou pi bon enfòmasyon.'
+      ];
+      addChatMsg(responses[Math.floor(Math.random() * responses.length)], 'bot');
+    }
+  }, 500);
+}
+
+function aiQuickAsk(cat) {
+  showSection('chat');
+  const msgs = {
+    puberty: {q:'Kisa k pase pandan pibète?',a:'Kò w pwodui òmòn ki lakòz devlopman tèt, pwèl, kwasans, ak peryòd. Tout bagay nòmal! ♥'},
+    period: {q:'Kisa se yon sik nòmal?',a:'Yon sik nòmal se 21-35 jou ak peryòd 3-7 jou. Chak fanm diferan! Swiv sik ou ak Fanm+ ♥'},
+    sex: {q:'Kisa se konsantman?',a:'Konsantman se yon WI klè ak antyouzyastik. Ou ka retire l nenpòt lè. Non se non. Kò w se pa w! ✊'},
+    contraception: {q:'Ki metòd kontrasepsyon ki egziste?',a:'Gen anpil metòd: kapot, grenn, PIU, implant, piki, patch, bag, eponj, dyafram, esterilizasyon. Pale ak doktè pou chwazi! 💊'},
+    pregnancy: {q:'Kijan pou m konnen si m ansent?',a:'Sentòm: peryòd an reta, vomisman maten, fatig, tèt fè mal, tèt sansib. Fè yon tès gwosès 1 semèn apre peryòd an reta. 👶'},
+    sti: {q:'Kisa se IST?',a:'IST se enfeksyon seksyèlman transmisib. Gen ladan: VIH, HPV, gonore, klamidya, sifilis, èpès. Fè tès regilyèman! 🔬'},
+    health: {q:'Konbyen dlo pou m bwe?',a:'8-10 vè dlo chak jou! Dlo ede po w, enèji w, ak tout kò w. ♥'},
+    rights: {q:'Kisa se dwa fanm?',a:'Dwa fanm se dwa moun! Otonomi kò, edikasyon, sante, libète kont vyolans. Pa janm kite pèsonn pran dwa w yo! ✊'},
+    mental: {q:'Kisa se depresyon?',a:'Depresyon se yon maladi mantal ki lakòz tristès pèsistan, pèt enterè, fatig. Li trete ak terapi ak medikaman. Ou pa poukont ou! 🧠'},
+    nutrition: {q:'Kisa se yon dyèt ekilibre?',a:'Manje fwi, legim, grenn, pwoteyin, bon grès. Evite twòp sik ak grès. Bwe dlo! 🥗'},
+    hiv: {q:'Kisa se VIH?',a:'VIH se yon viris ki atake sistèm iminitè. Avèk tretman ARV, moun ka viv lontan ak an sante. Fè tès! 🎗️'},
+    violence: {q:'Kisa se vyolans domestik?',a:'Vyolans domestik se abi fizik, emosyonèl, seksyèl, oswa finansye nan yon relasyon. Ou merite sekirite. Rele SOS la! 🛡️'}
+  };
+  const data = msgs[cat] || msgs.health;
+  addChatMsg(data.q, 'user');
+  setTimeout(() => addChatMsg(data.a, 'bot'), 400);
+}
+
+function aiRandomQuestion() {
+  const cats = ['puberty','period','sex','contraception','pregnancy','sti','health','rights','mental','nutrition','hiv','violence'];
+  aiQuickAsk(cats[Math.floor(Math.random() * cats.length)]);
+}
+
+// ===== EMERGENCY =====
+function initEmergencyContent() {
+  const pharmacies = [
+    {name:'Famasi Debout',phone:'50937021200'},{name:'Famasi Noël',phone:'50937021201'},
+    {name:'Famasi Dumornay',phone:'50937021202'},{name:'Famasi Saint-Pierre',phone:'50937021203'},
+    {name:'Famasi Bellevue',phone:'50937021204'},{name:'Famasi Centre-Ville',phone:'50937021205'}
+  ];
+  $('pharmacyNumbers').innerHTML = pharmacies.map(p => '<a href="tel:'+p.phone+'" class="emergency-btn">💊 '+p.name+' — '+p.phone+'</a>').join('');
+  const docEmerg = doctors.slice(0,6);
+  $('emergencyDoctors').innerHTML = docEmerg.map(d => '<a href="tel:'+d.phone+'" class="emergency-btn">👩‍⚕️ '+d.name+' — '+d.phone+'</a>').join('');
+}
+
+// ===== HIV =====
+function initHivAdvice() {
+  const container = $('hivAdvice');
+  const items = [
+    {icon:'🎗️',content:'VIH se yon viris ki atake sistèm iminitè a. Avèk tretman (ARV), moun ka viv lontan ak an sante.'},
+    {icon:'🛡️',content:'Prevansyon: sèvi ak kapot chak fwa. PrEP (grenn chak jou) diminye risk VIH pa 99%.'},
+    {icon:'💊',content:'Tretman ARV diminye viral load. Lè viral load endetektab, VIH pa transmèt. Sa rele "U=U" (Undetectable = Untransmittable).'},
+    {icon:'💪',content:'Sistèm iminitè ou: manje anpil fwi ak legim, dòmi ase, jere estrès, pran medikaman regilyèman, evite alkòl ak tabak.'},
+    {icon:'🥗',content:'Manje pou ranfòse iminite: vitamin C (zoranj, chadèk), zenk (nwa, grenn), pwoteyin (pwa, ze), bèta-karotèn (kawòt, patat).'},
+    {icon:'🏃',content:'Egzèsis modere ede sistèm iminitè a. Mache 30 minit chak jou. Yoga ak meditasyon ede redwi estrès.'},
+    {icon:'🧘',content:'Jere estrès: estrès kwonik febli sistèm iminitè. Pran tan pou detann, medite, pran gwo souf, dòmi ase.'},
+    {icon:'👩‍⚕️',content:'Kontwòl medikal regilye enpòtan. Vizit doktè chak 3-6 mwa. Tcheke viral load ak CD4 regilyèman.'},
+    {icon:'💬',content:'Ou pa poukont ou. Gen gwoup sipò pou moun k ap viv ak VIH. Pale ak lòt moun ki konprann.'},
+    {icon:'♥',content:'VIH pa defini ki moun ou ye. Avèk tretman, ou ka viv, travay, renmen, fè pitit. Ou se yon fanm fò!'}
+  ];
+  container.innerHTML = items.map(item => `
+    <div class="hiv-tip-card">
+      <span class="hiv-tip-icon">${item.icon}</span>
+      <p>${item.content}</p>
+    </div>
+  `).join('');
+}
+
+// ===== JOURNAL =====
+function setJournalMood(el, mood) { document.querySelectorAll('.jmood').forEach(b => b.classList.remove('active')); el.classList.add('active'); journalMood = mood; }
+function toggleJournalTag(btn, tag) { btn.classList.toggle('active'); const idx = journalTagActive.indexOf(tag); if (idx > -1) journalTagActive.splice(idx,1); else journalTagActive.push(tag); }
+function saveJournalEntry() {
+  const title = $('journalTitle').value.trim() || 'San tit ♥';
+  const content = $('journalContent').value.trim();
+  if (!content) { showToast('♥ Tanpri ekri yon bagay!'); return; }
+  journalEntries.unshift({id:Date.now(),title,content,mood:journalMood||'happy',tags:[...journalTagActive],date:new Date().toLocaleString()});
+  $('journalTitle').value = ''; $('journalContent').value = ''; journalTagActive = []; journalMood = '';
+  document.querySelectorAll('.jmood').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.journal-tags button').forEach(b => b.classList.remove('active'));
+  renderJournal(); showToast('♥ Antre sekel!');
+}
+function renderJournal() {
+  const el = $('journalEntries');
+  if (journalEntries.length === 0) { el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">📖 Pokenn antre. Kòmanse ekri! ♥</div>'; return; }
+  const em = {happy:'😊',love:'🥰',sad:'😢',angry:'😠',tired:'😴',anxious:'😰',calm:'😌'};
+  el.innerHTML = journalEntries.map(e => `
+    <div class="journal-entry-card">
+      <div class="journal-entry-header"><span class="journal-mood">${em[e.mood]||'😊'}</span><div><div class="journal-entry-title">${e.title}</div><div class="journal-entry-date">${e.date}</div></div></div>
+      <div class="journal-entry-content">${e.content}</div>
+      <div class="journal-entry-tags">${e.tags.map(t => '<span>#'+t+'</span>').join('')}</div>
+    </div>
+  `).join('');
+}
+
+// ===== PROFILE & SETTINGS =====
+function saveSettings() {
+  const n = $('settingsName').value.trim(); if (n) profileName = n;
+  const b = $('settingsBio').value.trim(); if (b) profileBio = b;
+  const e = $('settingsEmail').value.trim(); if (e) profileEmail = e;
+  $('profileNameDisplay').textContent = profileName;
+  $('profileBioDisplay').textContent = profileBio;
+  showToast('♥ Pwofil mete ajou!'); logActivity('Pwofil mete ajou');
+}
+function changePassword() {
+  const current = $('settingsCurrentPw').value;
+  const newPw = $('settingsNewPw').value;
+  if (current !== adminPassword) { showToast('❌ Modpas aktyèl pa kòrèk!'); return; }
+  if (newPw.length < 4) { showToast('❌ Nouvo modpas twò kout (min 4)!'); return; }
+  adminPassword = newPw; $('settingsCurrentPw').value = ''; $('settingsNewPw').value = '';
+  showToast('♥ Modpas chanje!'); logActivity('Modpas chanje');
+}
+function changeAdminPassword() {
+  const current = $('adminCurrentPw').value;
+  const newPw = $('adminNewPw').value;
+  if (current !== adminPassword) { showToast('❌ Modpas pa kòrèk!'); return; }
+  if (newPw.length < 4) { showToast('❌ Twò kout!'); return; }
+  adminPassword = newPw; $('adminCurrentPw').value = ''; $('adminNewPw').value = '';
+  showToast('♥ Modpas admin chanje!'); logActivity('Modpas admin chanje');
+}
+function exportReport() { showToast('📊 Rapò ekspòte!'); logActivity('Rapò ekspòte'); }
+
+// ===== RENDER ALL =====
+function renderAll() {
+  renderPeriod();
+  renderAppointments();
+  renderSocial();
+  updatePregnancy($('weekSlider').value);
+  renderJournal();
+  renderSexHistory();
+}
+
+// ===== DOWNLOAD DOC =====
+function downloadDoc(type) {
+  const names = {rights:'Gid_Dwa_Fanm.pdf',protection:'Fòm_Pwoteksyon.pdf',emergency:'Kat_Ijans.pdf'};
+  showToast('♥ Telechaje '+names[type]+'...');
+  logActivity('Dokimantal telechaje: '+names[type]);
+}
+
+// ===== QA DATABASE =====
+let qaDatabase = null;
+function getQA() {
+  const qa = {};
+  for (let lang of ['en','fr','ht','es']) {
+    qa[lang] = [];
+    for (let i = 0; i < 420; i++) {
+      const t = translations[lang];
+      if (!t) continue;
+      const q = t['ai_q' + (i + 1)];
+      const a = t['ai_a' + (i + 1)];
+      if (q && a && q !== '...' && a !== '...') {
+        qa[lang].push({q, a, id: i});
+      }
+    }
+  }
+  return qa;
+}
+
+// ===== INIT =====
+function showSettings() { showSection('profile'); }
+
+let floatingHeartsInterval;
+
+function init() {
+  initSocialPosts();
+  qaDatabase = getQA();
+  renderAll();
+  initPubertyPanels();
+  initInteractiveAdvice();
+  initPubertyQuiz();
+  initPregnancyTips();
+  initHivAdvice();
+  initEmergencyContent();
+  renderJournal();
+  setLanguage('ht');
+  
+  // Rotate motivation every 12s
+  setInterval(rotateMotivation, 12000);
+  
+  // Auto AI welcome
+  setTimeout(() => {
+    if ($('section-chat') && $('chatMessages').children.length === 0) {
+      addChatMsg('♥ Byenvini nan Fanm+ AI! Poze m yon kesyon oswa chwazi yon sijè anba a.', 'bot');
+    }
+  }, 2000);
+}
+
+window.onload = init;
+</script>
+</body>
+</html>

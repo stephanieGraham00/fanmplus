@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanm+ Admin</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  background: linear-gradient(135deg, #fce4ec, #f3e5f5, #fce4ec);
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #f48fb1, #ce93d8);
+  border-radius: 28px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(206, 147, 216, 0.3);
+}
+.header h1 { font-size: 28px; letter-spacing: 1px; }
+.header h1 span { font-size: 32px; }
+.header p { opacity: 0.8; margin-top: 4px; }
+.header-stats { display: flex; gap: 20px; }
+.hstat { text-align: center; }
+.hstat-num { font-size: 28px; font-weight: bold; }
+.hstat-lbl { font-size: 12px; opacity: 0.8; }
+
+/* CARDS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+.stat-icon {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.stat-info h3 { font-size: 28px; font-weight: bold; }
+.stat-info p { font-size: 13px; color: #666; }
+
+/* TABLE */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+.card h2 { font-size: 18px; margin-bottom: 16px; color: #7b1fa2; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 10px 12px; font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #f3e5f5; }
+td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #fce4ec; }
+tr:hover td { background: #faf5ff; }
+.role-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.role-badge.admin { background: #fce4ec; color: #c62828; }
+.role-badge.user { background: #f3e5f5; color: #7b1fa2; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.dot.online { background: #4caf50; }
+.dot.offline { background: #ccc; }
+
+/* ACTIVITY LOG */
+.activity-list { max-height: 400px; overflow-y: auto; }
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3e5f5;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.activity-text { flex: 1; }
+.activity-text strong { font-size: 13px; }
+.activity-text p { font-size: 12px; color: #666; margin-top: 2px; }
+.activity-time { font-size: 11px; color: #999; white-space: nowrap; }
+
+/* TAB BUTTONS */
+.tabs { display: flex; gap: 10px; margin-bottom: 18px; }
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+  color: #666;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, #f48fb1, #ce93d8);
+  color: white;
+  box-shadow: 0 4px 16px rgba(206, 147, 216, 0.3);
+}
+.tab-btn:hover { transform: translateY(-1px); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 20px; right: 20px;
+  background: linear-gradient(135deg, #f48fb1, #ce93d8);
+  color: white; padding: 14px 24px;
+  border-radius: 16px;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: none;
+  animation: slideIn 0.3s ease;
+  z-index: 1000;
+}
+@keyframes slideIn {
+  from { transform: translateX(100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* STATUS BAR */
+.status-bar {
+  text-align: center;
+  padding: 14px;
+  color: #999;
+  font-size: 12px;
+  margin-top: 20px;
+}
+.status-bar strong { color: #7b1fa2; }
+
+/* LOGIN */
+.auth-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.auth-overlay.hidden { display: none; }
+.auth-box {
+  background: white;
+  border-radius: 28px;
+  padding: 40px;
+  width: 360px;
+  max-width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.auth-box h2 { font-size: 24px; color: #7b1fa2; margin-bottom: 4px; }
+.auth-box p { color: #999; font-size: 14px; margin-bottom: 20px; }
+.auth-box input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #f3e5f5;
+  border-radius: 14px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border 0.2s;
+}
+.auth-box input:focus { border-color: #ce93d8; }
+.auth-box .btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f48fb1, #ce93d8);
+  color: white;
+  transition: transform 0.2s;
+  margin-top: 8px;
+}
+.auth-box .btn:hover { transform: translateY(-1px); }
+.auth-error { color: #c62828; font-size: 13px; margin-bottom: 12px; display: none; }
+</style>
+</head>
+<body>
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <h2>🛡️ Fanm+ Admin</h2>
+    <p>Konekte pou jere app la</p>
+    <div id="loginError" class="auth-error"></div>
+    <input type="email" id="loginEmail" value="admin@fanmplus.com" placeholder="Imèl">
+    <input type="password" id="loginPassword" value="admin123" placeholder="Modpas">
+    <button class="btn" onclick="handleLogin()">♥ Konekte</button>
+  </div>
+</div>
+
+<div class="container" id="mainContent" style="display:none">
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h1>🛡️ Fanm+ <span>Admin</span></h1>
+      <p>Jere tout itilizatè ak aktivite app la 🌸</p>
+    </div>
+    <div class="header-stats">
+      <div class="hstat"><div class="hstat-num" id="totalUsers">0</div><div class="hstat-lbl">👤 Itilizatè</div></div>
+      <div class="hstat"><div class="hstat-num" id="todayLogins">0</div><div class="hstat-lbl">📱 Jodi a</div></div>
+      <div class="hstat"><button onclick="handleLogout()" style="background:none;border:2px solid rgba(255,255,255,0.5);color:white;padding:8px 16px;border-radius:12px;cursor:pointer;font-size:13px;margin-top:4px;">🚪 Soti</button></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon" style="background:#fce4ec;">👤</div><div class="stat-info"><h3 id="statUsers">0</h3><p>Itilizatè total</p></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#f3e5f5;">📝</div><div class="stat-info"><h3 id="statPosts">0</h3><p>Posts pibliye</p></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#e8f5e9;">📅</div><div class="stat-info"><h3 id="statAppts">0</h3><p>Randevou</p></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:#fff3e0;">📖</div><div class="stat-info"><h3 id="statJournals">0</h3><p>Jounal antre</p></div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('users',this)">👤 Itilizatè</button>
+    <button class="tab-btn" onclick="switchTab('activity',this)">📋 Aktivite</button>
+    <button class="tab-btn" onclick="switchTab('stats',this)">📊 Estatistik</button>
+  </div>
+
+  <!-- USERS TAB -->
+  <div class="tab-content active" id="tabUsers">
+    <div class="card">
+      <h2>👤 Tout Itilizatè</h2>
+      <div style="overflow-x:auto"><table id="usersTable"><thead><tr><th>#</th><th>Non</th><th>Imèl</th><th>Wòl</th><th>Enskri</th><th>Dènye Koneksyon</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY TAB -->
+  <div class="tab-content" id="tabActivity">
+    <div class="card">
+      <h2>📋 Dènye Aktivite</h2>
+      <div class="activity-list" id="activityList"></div>
+    </div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div class="tab-content" id="tabStats">
+    <div class="card">
+      <h2>📊 Estatistik App</h2>
+      <p style="color:#666;margin-bottom:16px;">Vizyalizasyon itilizasyon app Fanm+</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+        <div style="background:#fce4ec;border-radius:16px;padding:20px;text-align:center;"><div style="font-size:36px;">👤</div><div style="font-size:24px;font-weight:bold;margin-top:8px;" id="chartUsers">0</div><div style="font-size:12px;color:#666;">Itilizatè</div></div>
+        <div style="background:#f3e5f5;border-radius:16px;padding:20px;text-align:center;"><div style="font-size:36px;">📱</div><div style="font-size:24px;font-weight:bold;margin-top:8px;" id="chartToday">0</div><div style="font-size:12px;color:#666;">Koneksyon jodi a</div></div>
+        <div style="background:#e8f5e9;border-radius:16px;padding:20px;text-align:center;"><div style="font-size:36px;">💬</div><div style="font-size:24px;font-weight:bold;margin-top:8px;" id="chartPosts">0</div><div style="font-size:12px;color:#666;">Posts</div></div>
+        <div style="background:#fff3e0;border-radius:16px;padding:20px;text-align:center;"><div style="font-size:36px;">📅</div><div style="font-size:24px;font-weight:bold;margin-top:8px;" id="chartAppts">0</div><div style="font-size:12px;color:#666;">Randevou</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>🔧 Zouti Admin</h2>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="tab-btn" onclick="exportReport()">📊 Ekspòte Rapò</button>
+        <button class="tab-btn" onclick="refreshAll()">🔄 Rafrechi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-bar" id="statusBar">
+    ♥ <strong>Fanm+</strong> — Dènye actualisation: <span id="lastUpdate">--</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = window.location.origin;
+let token = localStorage.getItem('fanmplus_admin_token');
+
+function $(id) { return document.getElementById(id); }
+
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// ===== AUTH =====
+async function handleLogin() {
+  const email = $('loginEmail').value;
+  const password = $('loginPassword').value;
+  try {
+    const r = await fetch(API + '/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await r.json();
+    if (!r.ok) { $('loginError').style.display = 'block'; $('loginError').textContent = '❌ ' + data.error; return; }
+    if (data.user.role !== 'admin') { $('loginError').style.display = 'block'; $('loginError').textContent = '❌ Se pa yon kont admin'; return; }
+    token = data.token;
+    localStorage.setItem('fanmplus_admin_token', token);
+    $('authOverlay').classList.add('hidden');
+    $('mainContent').style.display = 'block';
+    showToast('♥ Byenvini Admin!');
+    refreshAll();
+  } catch(e) { $('loginError').style.display = 'block'; $('loginError').textContent = '❌ Pa ka konekte ak serveur a'; }
+}
+
+function handleLogout() {
+  token = null;
+  localStorage.removeItem('fanmplus_admin_token');
+  $('mainContent').style.display = 'none';
+  $('authOverlay').classList.remove('hidden');
+}
+
+async function apiFetch(url, options = {}) {
+  const headers = { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', ...options.headers };
+  const r = await fetch(API + url, { ...options, headers });
+  if (r.status === 401) { handleLogout(); return null; }
+  return r.json();
+}
+
+// ===== DATA =====
+async function refreshAll() {
+  if (!token) return;
+  const [stats, users, activity] = await Promise.all([
+    apiFetch('/api/admin/stats'),
+    apiFetch('/api/users'),
+    apiFetch('/api/admin/activity')
+  ]);
+  if (!stats) return;
+
+  // Header stats
+  $('totalUsers').textContent = stats.users;
+  $('todayLogins').textContent = stats.todayLogins;
+  $('statUsers').textContent = stats.users;
+  $('statPosts').textContent = stats.posts;
+  $('statAppts').textContent = stats.appointments;
+  $('statJournals').textContent = stats.journals;
+  $('chartUsers').textContent = stats.users;
+  $('chartToday').textContent = stats.todayLogins;
+  $('chartPosts').textContent = stats.posts;
+  $('chartAppts').textContent = stats.appointments;
+
+  // Users table
+  if (users && Array.isArray(users)) {
+    const tbody = document.querySelector('#usersTable tbody');
+    tbody.innerHTML = users.map((u, i) => `<tr>
+      <td>${i + 1}</td>
+      <td><strong>${u.name}</strong></td>
+      <td>${u.email}</td>
+      <td><span class="role-badge ${u.role}">${u.role === 'admin' ? '🛡️ Admin' : '👤 Itilizatè'}</span></td>
+      <td>${new Date(u.created_at).toLocaleDateString()}</td>
+      <td>${u.last_login ? new Date(u.last_login).toLocaleString() : '--'}</td>
+    </tr>`).join('');
+  }
+
+  // Activity
+  if (activity && Array.isArray(activity)) {
+    const colors = ['#fce4ec','#f3e5f5','#e8f5e9','#fff3e0','#e3f2fd'];
+    const icons = { 'Koneksyon': '🔓', 'Enskripsyon': '✨', 'Post pibliye': '📝', 'Pwofil ajoute': '👤' };
+    $('activityList').innerHTML = activity.map(a => {
+      const icon = icons[a.action] || '📌';
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      return `<div class="activity-item">
+        <div class="activity-dot" style="background:${c}">${icon}</div>
+        <div class="activity-text">
+          <strong>${a.action}</strong>
+          <p>${a.user_name ? a.user_name + ' — ' : ''}${a.details || ''}</p>
+        </div>
+        <div class="activity-time">${new Date(a.created_at).toLocaleString()}</div>
+      </div>`;
+    }).join('');
+  }
+
+  $('lastUpdate').textContent = new Date().toLocaleTimeString();
+}
+
+// ===== TABS =====
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  $('tab' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+}
+
+// ===== ADMIN ACTIONS =====
+async function exportReport() {
+  const users = await apiFetch('/api/users');
+  const activity = await apiFetch('/api/admin/activity');
+  if (!users) return;
+  const report = {
+    generatedAt: new Date().toISOString(),
+    totalUsers: users.length,
+    users: users,
+    recentActivity: activity
+  };
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `fanmplus-report-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📊 Rapò ekspòte!');
+}
+
+function refreshAll() { refreshAll(); }
+
+// ===== AUTO-REFRESH =====
+setInterval(refreshAll, 30000);
+
+// ===== CHECK SESSION =====
+if (token) {
+  apiFetch('/api/admin/stats').then(data => {
+    if (data) {
+      $('authOverlay').classList.add('hidden');
+      $('mainContent').style.display = 'block';
+      refreshAll();
+    }
+  });
+}
+</script>
+</body>
+</html>
