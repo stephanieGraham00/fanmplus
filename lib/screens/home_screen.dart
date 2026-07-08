@@ -5,13 +5,12 @@ import '../services/storage_service.dart';
 import '../models/cycle_model.dart';
 import '../services/advice_service.dart';
 import '../theme/app_theme.dart';
-import '../utils/constants.dart';
+import '../utils/constants.dart'
 import '../widgets/mascot_widget.dart';
 import 'feed_screen.dart';
 import 'cycle_tracker_screen.dart';
 import 'sex_tracker_screen.dart';
 import 'wellness_screen.dart';
-import 'chat_screen.dart';
 import 'sos_screen.dart';
 import 'appointments_screen.dart';
 import 'doctors_screen.dart';
@@ -47,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const DailyMotivationScreen(),
     const CycleTrackerScreen(),
     const AdviceScreen(),
-    const ChatScreen(),
     const ProfileScreen(),
   ];
 
@@ -113,12 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _getTitle() {
-    const t = ['Akeyi', 'Motivasyon', 'Sik', 'Konsey', 'Chat', 'Mwen'];
+    const t = ['Akeyi', 'Motivasyon', 'Sik', 'Konsey', 'Mwen'];
     return t[_index];
   }
 
   String _getEmoji() {
-    const e = ['🌸', '💫', '🩸', '💡', '💬', '👤'];
+    const e = ['🌸', '💫', '🩸', '💡', '👤'];
     return e[_index];
   }
 }
