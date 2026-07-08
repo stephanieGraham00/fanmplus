@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/pregnancy_service.dart';
 import '../theme/app_theme.dart';
-import '../utils/constants.dart';
+import '../widgets/app_icon.dart';
 
 class PregnancyScreen extends StatefulWidget {
   const PregnancyScreen({super.key});
@@ -42,7 +42,7 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
     if (d != null) { _lmp = d; _update(); }
   }
 
-  void _shareWhatsApp(String text) async {
+  Future<void> _shareWhatsApp(String text) async {
     final uri = Uri.parse('https://wa.me/?text=${Uri.encodeComponent(text)}');
     if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
@@ -51,13 +51,13 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
   Widget build(BuildContext context) {
     final dateFmt = DateFormat('dd/MM/yyyy');
     final trimesterEmoji = ['🌸', '🌺', '👶'][_trimester - 1];
-    final trimesterName = ['1ye Trimès', '2yèm Trimès', '3yèm Trimès'][_trimester - 1];
+    final trimesterName = ['1er trimestre', '2ème trimestre', '3ème trimestre'][_trimester - 1];
 
     return Container(
       decoration: const BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFFCE4EC), Color(0xFFFFF0F5)])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(title: const Text('🤰 Swivi Gwosès')),
+        appBar: AppBar(title: const Text('🤰 Suivi Grossesse')),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -72,7 +72,7 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
                     children: [
                       Text(trimesterEmoji, style: const TextStyle(fontSize: 64)),
                       const SizedBox(height: 8),
-                      Text('Semèn $trimesterEmoji', style: const TextStyle(fontSize: 16, color: Colors.white70)),
+                      Text('Semaine $trimesterEmoji', style: const TextStyle(fontSize: 16, color: Colors.white70)),
                       Text('$_week', style: const TextStyle(fontSize: 56, fontWeight: FontWeight.bold, color: Colors.white)),
                       const SizedBox(height: 4),
                       Text(trimesterName, style: const TextStyle(fontSize: 14, color: Colors.white70)),
@@ -85,16 +85,16 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _infoCard('📅 Dènye règ', dateFmt.format(_lmp!), Icons.calendar_today, () => _pickDate()),
+                    child: _infoCard('📅 Dernières règles', dateFmt.format(_lmp!), Icons.calendar_today, () => _pickDate()),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _infoCard('👶 Dat akouchman', dateFmt.format(_dueDate), Icons.child_care, null),
+                    child: _infoCard('👶 Date d\'accouchement', dateFmt.format(_dueDate), Icons.child_care, null),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              _infoCard('📏 Taille bebe a', _babySize, Icons.straighten, null),
+              _infoCard('📏 Taille du bébé', _babySize, Icons.straighten, null),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(20),
@@ -102,7 +102,7 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(children: [Icon(Icons.lightbulb, color: Colors.pink, size: 20), SizedBox(width: 8), Text('💡 Konsèy pou semèn sa a', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14))]),
+                    const Row(children: [AppIcon('firstAid', size: 20, color: Colors.pink), SizedBox(width: 8), Text('Conseil pour cette semaine', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14))]),
                     const SizedBox(height: 8),
                     Text(_tip, style: const TextStyle(fontSize: 15, height: 1.5)),
                   ],
@@ -115,7 +115,7 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(children: [Icon(Icons.warning_amber, color: Colors.orange, size: 20), SizedBox(width: 8), Text('⚠️ Siy danje', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14))]),
+                    const Row(children: [AppIcon('firstAid', size: 20, color: Colors.orange), SizedBox(width: 8), Text('Signes de danger', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14))]),
                     const SizedBox(height: 8),
                     Text(PregnancyService.randomDangerSign(), style: const TextStyle(fontSize: 15, height: 1.5)),
                   ],
@@ -127,8 +127,8 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
                 borderRadius: BorderRadius.circular(24),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
-                  onTap: () => _shareWhatsApp('Fanm+ 🤰 Swivi Gwosès\n\nSemèn: $_week\nTrimès: $trimesterName\nTaille bebe: $_babySize\nDat akouchman: ${dateFmt.format(_dueDate)}\n\nKonsèy: $_tip\n\n${AppConstants.copyright}'),
-                  child: const Padding(padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.share, color: Colors.white), SizedBox(width: 8), Text('Pataje sou WhatsApp', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600))])),
+                  onTap: () => _shareWhatsApp('Fanm+ 🤰 Suivi Grossesse\n\nSemaine: $_week\nTrimestre: $trimesterName\nTaille bébé: $_babySize\nDate accouchement: ${dateFmt.format(_dueDate)}\n\nConseil: $_tip\n\n${AppConstants.copyright}'),
+                  child: const Padding(padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), child: Row(mainAxisSize: MainAxisSize.min, children: [AppIcon('firstAid', size: 20, color: Colors.white), SizedBox(width: 8), Text('Partager sur WhatsApp', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600))])),
                 ),
               ),
               const SizedBox(height: 24),
@@ -151,7 +151,7 @@ class _PregnancyScreenState extends State<PregnancyScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Icon(icon, color: Colors.pink, size: 24),
+              const AppIcon('firstAid', size: 24, color: Colors.pink),
               const SizedBox(height: 8),
               Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center),
               const SizedBox(height: 4),

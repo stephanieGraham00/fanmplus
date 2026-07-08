@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
-import '../services/storage_service.dart';
+import '../services/storage_service.dart'
 import '../theme/app_theme.dart';
 import '../utils/constants.dart';
-import 'admin_screen.dart';
+import '../widgets/app_icon.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -54,11 +54,7 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 16,
                       backgroundColor: AppTheme.rose,
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 16,
-                        color: Colors.white,
-                      ),
+                      child: const AppIcon('firstAid', size: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -67,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: Text(
-                user.isAnonymous ? 'Anonim' : user.username,
+                user.isAnonymous ? 'Anonyme' : user.username,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -98,9 +94,9 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildStat('Pòs', '$userPosts'),
-                    _buildStat('Swiv', '${user.followingCount}'),
-                    _buildStat('Swivan', '${user.followerCount}'),
+                    _buildStat('Posts', '$userPosts'),
+                    _buildStat('Suivi', '${user.followingCount}'),
+                    _buildStat('Suiveurs', '${user.followerCount}'),
                   ],
                 ),
               ),
@@ -110,28 +106,28 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   SwitchListTile(
-                    title: const Row(
+                    title: Row(
                       children: [
-                        Icon(Icons.visibility_off, color: AppTheme.rose),
-                        SizedBox(width: 12),
-                        Text('Mòd Anonim'),
+                        const AppIcon('firstAid', size: 22, color: AppTheme.rose),
+                        const SizedBox(width: 12),
+                        const Text('Mode anonyme'),
                       ],
                     ),
-                    subtitle: const Text('Pòs ou ap pibliye kache idantite w'),
+                    subtitle: const Text('Vos publications seront anonymes'),
                     value: user.isAnonymous,
                     onChanged: (v) => auth.toggleAnonymous(),
                     activeColor: AppTheme.rose,
                   ),
                   const Divider(height: 1),
                   SwitchListTile(
-                    title: const Row(
+                    title: Row(
                       children: [
-                        Icon(Icons.fingerprint, color: AppTheme.lavender),
-                        SizedBox(width: 12),
-                        Text('Biometrik'),
+                        const AppIcon('firstAid', size: 22, color: AppTheme.lavender),
+                        const SizedBox(width: 12),
+                        const Text('Biométrie'),
                       ],
                     ),
-                    subtitle: const Text('Ouvri app la ak anprent dwèt ou'),
+                    subtitle: const Text('Ouvrir l\'app avec votre empreinte'),
                     value: auth.biometricEnabled,
                     onChanged: (v) => auth.toggleBiometric(),
                     activeColor: AppTheme.lavender,
@@ -144,54 +140,54 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.edit, color: AppTheme.rose),
-                    title: const Text('Modifye Pwofil'),
+                    leading: const AppIcon('firstAid', size: 22, color: AppTheme.rose),
+                    title: const Text('Modifier le profil'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => _editProfile(context, auth),
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.admin_panel_settings, color: Colors.indigo),
-                    title: const Text('Admin'),
-                    subtitle: const Text('Estatistik ak kontwòl'),
+                    leading: const AppIcon('firstAid', size: 22, color: Colors.indigo),
+                    title: const Text('Administration'),
+                    subtitle: const Text('Statistiques et contrôles'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AdminScreen())),
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.shield, color: Colors.green),
-                    title: const Text('Sekirite'),
-                    subtitle: const Text('Modpas ak pwoteksyon'),
+                    leading: const AppIcon('firstAid', size: 22, color: Colors.green),
+                    title: const Text('Sécurité'),
+                    subtitle: const Text('Mot de passe et protection'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => _showSecurityDialog(context),
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.info_outline, color: AppTheme.lavender),
+                    leading: const AppIcon('firstAid', size: 22, color: AppTheme.lavender),
                     title: const Text('À propos'),
-                    subtitle: const Text('Devlòpè, verèsyon & copyright'),
+                    subtitle: const Text('Développeur, version & copyright'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => _showAboutDialog(context),
                   ),
                   const Divider(height: 1),
                   ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.red),
-                    title: const Text('Dekonekte'),
+                    leading: const AppIcon('firstAid', size: 22, color: Colors.red),
+                    title: const Text('Déconnexion'),
                     onTap: () async {
                       final confirm = await showDialog<bool>(
                         context: context,
                         builder: (ctx) => AlertDialog(
-                          title: const Text('Dekonekte'),
-                          content: const Text('Eske w si w vle dekonekte?'),
+                          title: const Text('Déconnexion'),
+                          content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(ctx, false),
-                              child: const Text('Anile'),
+                              child: const Text('Annuler'),
                             ),
                             ElevatedButton(
                               onPressed: () => Navigator.pop(ctx, true),
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                              child: const Text('Wi, dekonekte'),
+                              child: const Text('Oui, déconnecter'),
                             ),
                           ],
                         ),
@@ -204,32 +200,37 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppTheme.roseLight.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Column(
-              children: [
-                Text(
-                  'Devlòpè: STEPHANIE A.G',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.rose,
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.roseLight.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Développeur: ${AppConstants.developer}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.rose,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '© 2026 Fanm+. Tout dwa rezève.',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    'Tél: ${AppConstants.developerPhone}',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    AppConstants.copyright,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -263,14 +264,14 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Modifye Pwofil'),
+        title: const Text('Modifier le profil'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: usernameController,
               decoration: const InputDecoration(
-                labelText: 'Non itilizatè',
+                labelText: "Nom d'utilisateur",
               ),
             ),
             const SizedBox(height: 12),
@@ -278,7 +279,7 @@ class ProfileScreen extends StatelessWidget {
               controller: bioController,
               maxLines: 3,
               decoration: const InputDecoration(
-                labelText: 'Biyografi',
+                labelText: 'Biographie',
               ),
             ),
           ],
@@ -290,7 +291,7 @@ class ProfileScreen extends StatelessWidget {
               usernameController.dispose();
               Navigator.pop(ctx);
             },
-            child: const Text('Anile'),
+            child: const Text('Annuler'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -304,7 +305,7 @@ class ProfileScreen extends StatelessWidget {
               usernameController.dispose();
               Navigator.pop(ctx);
             },
-            child: const Text('Anrejistre'),
+            child: const Text('Enregistrer'),
           ),
         ],
       ),
@@ -315,60 +316,60 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.shield, color: Colors.green),
-            SizedBox(width: 8),
-            Text('Sekirite'),
+            const AppIcon('firstAid', size: 22, color: Colors.green),
+            const SizedBox(width: 8),
+            const Text('Sécurité'),
           ],
         ),
-        content: const Column(
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 18),
-                SizedBox(width: 8),
-                Text('Modpas kode ak algorithm sekirize'),
+                const AppIcon('firstAid', size: 18, color: Colors.green),
+                const SizedBox(width: 8),
+                const Text('Mot de passe chiffré avec algorithme sécurisé'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 18),
-                SizedBox(width: 8),
-                Text('Tout done anrejistre lokalman'),
+                const AppIcon('firstAid', size: 18, color: Colors.green),
+                const SizedBox(width: 8),
+                const Text('Toutes les données stockées localement'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 18),
-                SizedBox(width: 8),
-                Text('Pwoteksyon kont pirataj (injection)'),
+                const AppIcon('firstAid', size: 18, color: Colors.green),
+                const SizedBox(width: 8),
+                const Text('Protection contre les injections'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 18),
-                SizedBox(width: 8),
-                Text('Mòd anonim pou pwoteksyon idantite'),
+                const AppIcon('firstAid', size: 18, color: Colors.green),
+                const SizedBox(width: 8),
+                const Text('Mode anonyme pour protéger l\'identité'),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 18),
-                SizedBox(width: 8),
-                Text('Seansyon an sekirize avèk token'),
+                const AppIcon('firstAid', size: 18, color: Colors.green),
+                const SizedBox(width: 8),
+                const Text('Session sécurisée avec token'),
               ],
             ),
-            SizedBox(height: 16),
-            Text(
-              'Fanm+ pran sekirite ou oserye. '
-              'Tout done yo anrejistre lokalman sou aparèy ou.',
+            const SizedBox(height: 16),
+            const Text(
+              'Fanm+ prend votre sécurité au sérieux. '
+              'Toutes les données sont stockées localement sur votre appareil.',
               style: TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ],
@@ -376,7 +377,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Fèmen'),
+            child: const Text('Fermer'),
           ),
         ],
       ),
@@ -387,42 +388,48 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Row(children: [
-          CircleAvatar(backgroundColor: AppTheme.roseLight, radius: 20, child: Text('🌸', style: TextStyle(fontSize: 20))),
-          SizedBox(width: 12),
-          Text('À propos Fanm+'),
+        title: Row(children: [
+          CircleAvatar(backgroundColor: AppTheme.roseLight, radius: 20, child: const AppIcon('paper', size: 20)),
+          const SizedBox(width: 12),
+          const Text('À propos de Fanm+'),
         ]),
         content: SingleChildScrollView(
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Center(child: Text('🌸', style: TextStyle(fontSize: 48))),
+            Center(child: const AppIcon('paper', size: 48)),
             const SizedBox(height: 8),
             const Center(child: Text('Fanm+', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.lavender))),
             const Center(child: Text('v${AppConstants.appVersion}', style: TextStyle(color: Colors.grey))),
             const SizedBox(height: 16),
-            const Text('Fanm+ se yon espas sekirize pou fanm. Yon kote pou w santi w an sekirite, pataje eksperyans, swiv sik menstruel ou, byennèt, ak chat ak lòt fanm.', style: TextStyle(fontSize: 13, height: 1.5)),
+            const Text('Fanm+ est un espace sûr pour les femmes. Un lieu pour vous sentir en sécurité, partager des expériences, suivre votre cycle menstruel, votre bien-être, et discuter avec d\'autres femmes.', style: TextStyle(fontSize: 13, height: 1.5)),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: AppTheme.roseLight.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
-              child: const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [Icon(Icons.code, size: 16, color: AppTheme.rose), SizedBox(width: 8), Text('Devlòpè:', style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.rose))]),
-                SizedBox(height: 4),
-                Text(AppConstants.developer, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppTheme.rose)),
-                SizedBox(height: 4),
-                Text('Yon jèn fanm ayisyen kap sipòte fanm.', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                SizedBox(height: 8),
-                Row(children: [Icon(Icons.favorite, size: 16, color: AppTheme.rose), SizedBox(width: 8), Expanded(child: Text('Fèt ak anpil lanmou pou tout fanm.', style: TextStyle(fontSize: 12, color: Colors.grey)))]),
-                SizedBox(height: 4),
-                Row(children: [Icon(Icons.location_on, size: 16, color: AppTheme.rose), SizedBox(width: 8), Text('Ayiti 🇭🇹', style: TextStyle(fontSize: 12, color: Colors.grey))]),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(children: [const AppIcon('firstAid', size: 16, color: AppTheme.rose), const SizedBox(width: 8), const Text('Développeur:', style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.rose))]),
+                const SizedBox(height: 4),
+                Text(AppConstants.developer, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppTheme.rose)),
+                const SizedBox(height: 4),
+                Row(children: [
+                  const Icon(Icons.phone, size: 14, color: AppTheme.rose),
+                  const SizedBox(width: 6),
+                  Text(AppConstants.developerPhone, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.lavender)),
+                ]),
+                const SizedBox(height: 4),
+                const Text('Jeune femme haïtienne au service des femmes.', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                const SizedBox(height: 8),
+                Row(children: [const AppIcon('firstAid', size: 16, color: AppTheme.rose), const SizedBox(width: 8), const Expanded(child: Text('Fait avec beaucoup d\'amour pour toutes les femmes.', style: TextStyle(fontSize: 12, color: Colors.grey)))]),
+                const SizedBox(height: 4),
+                Row(children: [const Icon(Icons.location_on, size: 16, color: AppTheme.rose), const SizedBox(width: 8), const Text('Haïti 🇭🇹', style: TextStyle(fontSize: 12, color: Colors.grey))]),
               ]),
             ),
             const SizedBox(height: 12),
             const Center(child: Text(AppConstants.copyright, style: TextStyle(color: Colors.grey, fontSize: 12))),
             const SizedBox(height: 4),
-            const Center(child: Text('Tout dwa rezève.', style: TextStyle(color: Colors.grey, fontSize: 12))),
+            const Center(child: Text('Tous droits réservés.', style: TextStyle(color: Colors.grey, fontSize: 12))),
           ]),
         ),
-        actions: [ElevatedButton(onPressed: () => Navigator.pop(ctx), child: const Text('Fèmen'))],
+        actions: [ElevatedButton(onPressed: () => Navigator.pop(ctx), child: const Text('Fermer'))],
       ),
     );
   }

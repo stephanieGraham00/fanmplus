@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class WellnessScreen extends StatelessWidget {
   const WellnessScreen({super.key});
@@ -8,75 +9,75 @@ class WellnessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final activities = [
       _WellnessActivity(
-        icon: Icons.self_improvement,
+        icon: 'firstAid',
         title: 'Yoga',
-        description: 'Pran 10 minit pou detann kò w ak lespri w',
+        description: 'Prenez 10 minutes pour détendre votre corps et votre esprit',
         color: Colors.purple,
         tips: [
-          'Kòmanse ak respire pwofondman',
-          'Fè pozasyon timoun pou 5 minit',
-          'Fè etire kò w dousman',
-          'Fè 3-4 sik respirasyon chak maten',
+          'Commenceintez à la respiration profonde',
+          'Faites la posture de l\'enfant pendant 5 minutes',
+          'Étirez votre corps doucement',
+          'Faites 3-4 cycles de respiration chaque matin',
         ],
       ),
       _WellnessActivity(
-        icon: Icons.fitness_center,
+        icon: 'firstAid',
         title: 'Gym',
-        description: 'Fè egzèsis pou kenbe fòm',
+        description: 'Faites de l\'exercice pour garder la forme',
         color: Colors.orange,
         tips: [
-          'Kòmanse ak 10 minit chak jou',
-          'Fè egzèsis kadyo (mache, kouri)',
-          'Pran dlo regilyèman',
-          'Pa blije fè ekstrèm - konsistans se kle',
+          'Commencez par 10 minutes chaque jour',
+          'Faites des exercices cardio (marche, course)',
+          'Buvez de l\'eau régulièrement',
+          'Ne faites pas d\'excès - la régularité est la clé',
         ],
       ),
       _WellnessActivity(
-        icon: Icons.water_drop,
-        title: 'Idratasyon',
-        description: 'Bwè ase dlo chak jou',
+        icon: 'firstAid',
+        title: 'Hydratation',
+        description: 'Buvez suffisamment d\'eau chaque jour',
         color: Colors.blue,
         tips: [
-          'Bwè 8 vè dlo pa jou (1.5 - 2 lit)',
-          'Met rakèl dlo ak ou toutan',
-          'Ajoute sitwon oswa mant pou gou',
-          'Evite twòp bwason sikre',
+          'Buvez 8 verres d\'eau par jour (1,5 - 2 litres)',
+          'Gardez une bouteille d\'eau avec vous',
+          'Ajoutez du citron ou de la menthe pour le goût',
+          'Évitez les boissons trop sucrées',
         ],
       ),
       _WellnessActivity(
-        icon: Icons.nightlight_round,
-        title: 'Meditasyon',
-        description: 'Medite pou lapè enteryè',
+        icon: 'firstAid',
+        title: 'Méditation',
+        description: 'Méditez pour la paix intérieure',
         color: Colors.teal,
         tips: [
-          'Jwenn yon kote trankil',
-          'Fèmen je w epi respire pwofondman',
-          'Konsantre sou moman prezan an',
-          'Kòmanse ak 5 minit, ogmante piti piti',
+          'Trouvez un endroit calme',
+          'Fermez les yeux et respirez profondément',
+          'Concentrez-vous sur le moment présent',
+          'Commencez par 5 minutes, augmentez progressivement',
         ],
       ),
       _WellnessActivity(
-        icon: Icons.breakfast_dining,
-        title: 'Manje Sante',
-        description: 'Manje balanse ak nitritif',
+        icon: 'firstAid',
+        title: 'Alimentation saine',
+        description: 'Mangez équilibré et nutritif',
         color: Colors.green,
         tips: [
-          'Manje fwi ak legim chak jou',
-          'Evite twòp sik ak manje rafine',
-          'Manje pòsyon kontwole',
-          'Pran tan pou manje - pa prese',
+          'Mangez des fruits et légumes chaque jour',
+          'Évitez l\'excès de sucre et d\'aliments transformés',
+          'Mangez des portions contrôlées',
+          'Prenez le temps de manger - ne vous précipitez pas',
         ],
       ),
       _WellnessActivity(
-        icon: Icons.favorite,
-        title: 'Swen Pèsonèl',
-        description: 'Pran swen tèt ou chak jou',
+        icon: 'firstAid',
+        title: 'Soins personnels',
+        description: 'Prenez soin de vous chaque jour',
         color: AppTheme.rose,
         tips: [
-          'Pran 5 minit chak maten pou tèt ou',
-          'Fè bagay ki fè w kontan',
-          'Di non lè w bezwen - fwontyè se enpòtan',
-          'Pa bliye dòmi ase (7-8 èdtan)',
+          'Prenez 5 minutes chaque matin pour vous',
+          'Faites quelque chose qui vous fait du bien',
+          'Dites non quand c\'est nécessaire - les limites sont importantes',
+          'N\'oubliez pas de bien dormir (7-8 heures)',
         ],
       ),
     ];
@@ -99,7 +100,7 @@ class WellnessScreen extends StatelessWidget {
             child: ExpansionTile(
               leading: CircleAvatar(
                 backgroundColor: activity.color.withOpacity(0.15),
-                child: Icon(activity.icon, color: activity.color, size: 24),
+                child: AppIcon('firstAid', size: 24, color: activity.color),
               ),
               title: Text(
                 activity.title,
@@ -114,12 +115,12 @@ class WellnessScreen extends StatelessWidget {
               children: [
                 const Divider(),
                 const SizedBox(height: 4),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.lightbulb, size: 16, color: AppTheme.rose),
-                    SizedBox(width: 6),
+                    const AppIcon('firstAid', size: 16, color: AppTheme.rose),
+                    const SizedBox(width: 6),
                     Text(
-                      'Konsèy pratik',
+                      'Conseils pratiques',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.rose,
@@ -135,8 +136,7 @@ class WellnessScreen extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.check_circle,
-                            size: 16, color: AppTheme.rose),
+                        const AppIcon('firstAid', size: 16, color: AppTheme.rose),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -158,7 +158,7 @@ class WellnessScreen extends StatelessWidget {
 }
 
 class _WellnessActivity {
-  final IconData icon;
+  final String icon;
   final String title;
   final String description;
   final Color color;

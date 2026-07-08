@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(_isLogin
-              ? 'Imèl ou modpas pa kòrèk'
-              : 'Enskripsyon an pa mache. Tanpri eseye ankò.'),
+              ? 'Email ou mot de passe incorrect'
+              : 'Inscription échouée. Veuillez réessayer.'),
           backgroundColor: Colors.red.shade400,
         ),
       );
@@ -91,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('🌸', style: TextStyle(fontSize: 64)),
+                      const AppIcon('paper', size: 72),
                       const SizedBox(height: 8),
                       const Text(
                         'Fanm+',
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         ),
                       ),
                       const Text(
-                        'Safe Space for Women',
+                        'Espace sûr pour les femmes',
                         style: TextStyle(fontSize: 14, color: Colors.white70),
                       ),
                       const SizedBox(height: 40),
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           child: Column(
                             children: [
                               Text(
-                                _isLogin ? 'Konekte' : 'Enskri',
+                                _isLogin ? 'Connexion' : 'Inscription',
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -125,29 +126,29 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   controller: _usernameController,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: const InputDecoration(
-                                    labelText: 'Non itilizatè',
-                                    prefixIcon: Icon(Icons.person),
+                                    labelText: "Nom d'utilisateur",
+                                    prefixIcon: AppIcon('community', size: 20),
                                   ),
                                   validator: (v) =>
                                       v == null || v.trim().isEmpty
-                                          ? 'Champ obligatwa'
+                                          ? 'Champ obligatoire'
                                           : null,
                                 ),
                               if (!_isLogin) const SizedBox(height: 16),
                               TextFormField(
                                 controller: _emailController,
                                 decoration: const InputDecoration(
-                                  labelText: 'Imèl',
-                                  prefixIcon: Icon(Icons.email),
+                                  labelText: 'Email',
+                                  prefixIcon: AppIcon('paper', size: 20),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
                                 validator: (v) {
                                   if (v == null || v.trim().isEmpty) {
-                                    return 'Champ obligatwa';
+                                    return 'Champ obligatoire';
                                   }
                                   if (!v.contains('@') || !v.contains('.')) {
-                                    return 'Imèl pa valab';
+                                    return 'Email invalide';
                                   }
                                   return null;
                                 },
@@ -156,8 +157,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               TextFormField(
                                 controller: _passwordController,
                                 decoration: InputDecoration(
-                                  labelText: 'Modpas',
-                                  prefixIcon: const Icon(Icons.lock),
+                                  labelText: 'Mot de passe',
+                                  prefixIcon: const AppIcon('firstAid', size: 20),
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       _obscurePassword
@@ -172,8 +173,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 textInputAction: TextInputAction.done,
                                 onFieldSubmitted: (_) => _submit(),
                                 validator: (v) {
-                                  if (v == null || v.isEmpty) return 'Champ obligatwa';
-                                  if (v.length < 4) return 'Modpas fòk 4 karaktè minimòm';
+                                  if (v == null || v.isEmpty) return 'Champ obligatoire';
+                                  if (v.length < 4) return 'Le mot de passe doit contenir au moins 4 caractères';
                                   return null;
                                 },
                               ),
@@ -193,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           ),
                                         )
                                       : Text(
-                                          _isLogin ? 'Konekte' : 'Enskri',
+                                          _isLogin ? 'Connexion' : "S'inscrire",
                                           style: const TextStyle(fontSize: 16),
                                         ),
                                 ),
@@ -203,8 +204,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 onPressed: _isLoading ? null : _switchMode,
                                 child: Text(
                                   _isLogin
-                                      ? 'Pa gen kont? Enskri ou'
-                                      : 'Gen kont deja? Konekte',
+                                      ? "Pas de compte ? S'inscrire"
+                                      : 'Déjà un compte ? Se connecter',
                                   style: const TextStyle(color: AppTheme.rose),
                                 ),
                               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/advice_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class AdviceScreen extends StatefulWidget {
   const AdviceScreen({super.key});
@@ -11,7 +12,7 @@ class AdviceScreen extends StatefulWidget {
 
 class _AdviceScreenState extends State<AdviceScreen> with SingleTickerProviderStateMixin {
   late TabController _tabCtrl;
-  String _selectedCat = 'Sante';
+  String _selectedCat = 'Santé';
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _AdviceScreenState extends State<AdviceScreen> with SingleTickerProviderSt
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('Konsey Fanm+'),
+          title: const Text('Conseils Fanm+'),
           bottom: TabBar(
             controller: _tabCtrl,
             isScrollable: true,
@@ -66,12 +67,12 @@ class _AdviceScreenState extends State<AdviceScreen> with SingleTickerProviderSt
 
   Widget _adviceCard(String category, String text, int index) {
     final emojis = {
-      'Sante': ['💊', '🏥', '❤️', '🩺', '💪', '🧬', '🌿', '🥗', '🧘', '💉'],
-      'Relasyon': ['💕', '🤝', '💌', '💑', '💞', '🌹', '💗', '🫂', '💛', '💋'],
-      'Sikolojik': ['🧠', '💭', '🌱', '🎀', '🧘', '🌈', '💫', '🌟', '🕊️', '🌸'],
-      'Edikasyon': ['📚', '✏️', '🎓', '📖', '💡', '📝', '🔬', '🌍', '📊', '🏆'],
-      'Dwa Fanm': ['⚖️', '✊', '👩‍⚖️', '📜', '🔍', '🗳️', '💜', '🌍', '🛡️', '📢'],
-      'Byennèt': ['🛁', '🌿', '🧴', '✨', '🎵', '💆', '🌸', '🕯️', '🧖', '🌺'],
+      'Santé': ['💊', '🏥', '❤️', '🩺', '💪', '🧬', '🌿', '🥗', '🧘', '💉'],
+      'Relations': ['💕', '🤝', '💌', '💑', '💞', '🌹', '💗', '🫂', '💛', '💋'],
+      'Psychologie': ['🧠', '💭', '🌱', '🎀', '🧘', '🌈', '💫', '🌟', '🕊️', '🌸'],
+      'Éducation': ['📚', '✏️', '🎓', '📖', '💡', '📝', '🔬', '🌍', '📊', '🏆'],
+      'Droits des femmes': ['⚖️', '✊', '👩‍⚖️', '📜', '🔍', '🗳️', '💜', '🌍', '🛡️', '📢'],
+      'Bien-être': ['🛁', '🌿', '🧴', '✨', '🎵', '💆', '🌸', '🕯️', '🧖', '🌺'],
     };
     final catEmojis = emojis[category] ?? ['💜'];
     final emoji = catEmojis[index % catEmojis.length];
@@ -91,7 +92,7 @@ class _AdviceScreenState extends State<AdviceScreen> with SingleTickerProviderSt
           child: Center(child: Text(emoji, style: const TextStyle(fontSize: 22))),
         ),
         title: Text(
-          'Konsey #${index + 1}',
+          'Conseil #${index + 1}',
           style: TextStyle(fontSize: 12, color: AppTheme.lavender, fontWeight: FontWeight.w600),
         ),
         subtitle: Text(text, style: const TextStyle(fontSize: 14, height: 1.4)),
@@ -101,7 +102,7 @@ class _AdviceScreenState extends State<AdviceScreen> with SingleTickerProviderSt
             color: AppTheme.lavenderPale,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(Icons.favorite_border, size: 16, color: AppTheme.rose),
+          child: const AppIcon('firstAid', size: 16, color: AppTheme.rose),
         ),
       ),
     );

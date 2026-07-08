@@ -3,6 +3,9 @@ import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/discharge_mycosis_screen.dart';
+import 'screens/cycle_history_screen.dart';
+import 'screens/hiv_screen.dart';
 
 class FanmPlusApp extends StatelessWidget {
   const FanmPlusApp({super.key});
@@ -28,6 +31,15 @@ class FanmPlusApp extends StatelessWidget {
         break;
       case '/home':
         page = const HomeScreen();
+        break;
+      case '/discharge-mycosis':
+        page = const DischargeMycosisScreen();
+        break;
+      case '/cycle-history':
+        page = const CycleHistoryScreen();
+        break;
+      case '/hiv':
+        page = const HivScreen();
         break;
       default:
         page = const SplashScreen();

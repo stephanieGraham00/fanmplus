@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import '../services/storage_service.dart';
 import '../models/cycle_model.dart';
 import '../theme/app_theme.dart';
+import '../utils/cycle_helpers.dart';
+import '../widgets/app_icon.dart';
 
 class CycleTrackerScreen extends StatefulWidget {
   const CycleTrackerScreen({super.key});
@@ -21,7 +23,7 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
   final _today = DateTime.now();
   DateTime _viewMonth = DateTime.now();
 
-  final _symptoms = ['Kramp', 'Tèt', 'Fatig', 'Vant', 'Do', 'Emosyon', 'Anvi manje', 'Gonfle', 'Enèji', 'San'];
+  final _symptoms = ['Crampe', 'Tête', 'Fatigue', 'Ventre', 'Dos', 'Émotion', 'Faim', 'Gonflement', 'Énergie', 'Sang'];
 
   @override
   void initState() {
@@ -39,11 +41,10 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
     super.dispose();
   }
 
-  String get _monthLabel => DateFormat('MMMM yyyy', 'fr').format(_viewMonth);
   String get _monthLabelCreole => {
-    'janvier': 'Janvye', 'février': 'Fevriye', 'mars': 'Mas', 'avril': 'Avril',
-    'mai': 'Me', 'juin': 'Jen', 'juillet': 'Jiyè', 'août': 'Out',
-    'septembre': 'Septanm', 'octobre': 'Oktòb', 'novembre': 'Novanm', 'décembre': 'Desanm',
+    'janvier': 'Janvier', 'février': 'Février', 'mars': 'Mars', 'avril': 'Avril',
+    'mai': 'Mai', 'juin': 'Juin', 'juillet': 'Juillet', 'août': 'Août',
+    'septembre': 'Septembre', 'octobre': 'Octobre', 'novembre': 'Novembre', 'décembre': 'Décembre',
   }[DateFormat('MMMM', 'fr').format(_viewMonth).toLowerCase()] ?? DateFormat('MMMM', 'fr').format(_viewMonth);
 
   void _prevMonth() => setState(() => _viewMonth = DateTime(_viewMonth.year, _viewMonth.month - 1));
@@ -67,15 +68,12 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFFFF0F5), Color(0xFFF3E8FF)]),
-        ),
+        decoration: const BoxDecoration(gradient: AppTheme.bgGradient),
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // Header
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -86,9 +84,9 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                   ),
                   child: Column(children: [
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                      _miniStat(cycle.day, 'Jou', Icons.calendar_today),
-                      _miniStat(cycle.phaseName, 'Faz', Icons.circle),
-                      _miniStat('${cycle.cycleLength}j', 'Sik', Icons.repeat),
+                      _miniStat('${cycle.day}', 'Jour', Icons.calendar_today),
+                      _miniStat(cycle.phaseName, 'Phase', Icons.circle),
+                      _miniStat('${cycle.cycleLength}j', 'Cycle', Icons.repeat),
                     ]),
                     const SizedBox(height: 12),
                     ClipRRect(
@@ -101,22 +99,42 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('${cycle.day}/${cycle.cycleLength} jou', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                    Text('${cycle.day}/${cycle.cycleLength} jours', style: const TextStyle(color: Colors.white70, fontSize: 12)),
                   ]),
                 ),
                 const SizedBox(height: 16),
 
-                // Fertility + Risk card
                 Row(children: [
-                  Expanded(child: _infoCard('Fenèt fètil', cycle.isInFertileWindow ? '🥚 Wi' : '🌱 Non', cycle.isInFertileWindow ? Colors.orange : Colors.green)),
+                  Expanded(child: _infoCard('Fenêtre fertile', cycle.isInFertileWindow ? 'Oui' : 'Non', cycle.isInFertileWindow ? Colors.orange : Colors.green)),
                   const SizedBox(width: 8),
-                  Expanded(child: _infoCard('Risks gwosès', cycle.riskLabel, cycle.pregnancyRisk >= 10 ? Colors.red : Colors.green)),
+                  Expanded(child: _infoCard('Risque grossesse', cycle.riskLabel, cycle.pregnancyRisk >= 10 ? Colors.red : Colors.green)),
                   const SizedBox(width: 8),
-                  Expanded(child: _infoCard('Pwochen règ', '${cycle.daysUntilNextPeriod} jou', AppTheme.rose)),
+                  Expanded(child: _infoCard('Prochaines règles', '${cycle.daysUntilNextPeriod} jours', AppTheme.rose)),
                 ]),
                 const SizedBox(height: 16),
 
-                // Calendar
+                // Adaptive prediction info
+                if (cycle.pastCycleLengths.isNotEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.lavenderPale.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(children: [
+                      const AppIcon('paper', size: 18, color: AppTheme.lavender),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Prédiction adaptative : ${CycleCalculator.adaptiveInfo([cycle.startDate, ...cycle.periodDates])}',
+                          style: const TextStyle(fontSize: 12, color: AppTheme.lavender, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ]),
+                  ),
+                const SizedBox(height: 16),
+
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -132,7 +150,7 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                     ]),
                     const SizedBox(height: 8),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children:
-                      ['Di', 'Le', 'Ma', 'Me', 'Je', 'Va', 'Sa'].map((d) =>
+                      ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'].map((d) =>
                         SizedBox(width: 36, child: Text(d, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.grey[500], fontWeight: FontWeight.w600)))
                       ).toList(),
                     ),
@@ -176,17 +194,16 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                     ),
                     const SizedBox(height: 8),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      _legend(AppTheme.roseLight, 'Règ'),
+                      _legend(AppTheme.roseLight, 'Règles'),
                       const SizedBox(width: 12),
-                      _legend(AppTheme.lavenderPale, 'Fètil'),
+                      _legend(AppTheme.lavenderPale, 'Fertile'),
                       const SizedBox(width: 12),
-                      _legend(Colors.orange.withOpacity(0.3), 'Ovilasyon'),
+                      _legend(Colors.orange.withOpacity(0.3), 'Ovulation'),
                     ]),
                   ]),
                 ),
                 const SizedBox(height: 16),
 
-                // Phase details
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -194,9 +211,9 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
                   ),
-                  child: Column(children: [
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
-                      Text(cycle.phaseEmoji, style: const TextStyle(fontSize: 28)),
+                      const AppIcon('paper', size: 26, color: AppTheme.rose),
                       const SizedBox(width: 12),
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(cycle.phaseName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.lavender)),
@@ -209,7 +226,6 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                 ),
                 const SizedBox(height: 16),
 
-                // Day controls
                 Row(children: [
                   Expanded(
                     child: SizedBox(
@@ -217,7 +233,7 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                       child: ElevatedButton.icon(
                         onPressed: () => _nextDay(cycle, storage),
                         icon: const Icon(Icons.add),
-                        label: const Text('Jou +'),
+                        label: const Text('Jour +'),
                         style: ElevatedButton.styleFrom(backgroundColor: AppTheme.rose, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
                       ),
                     ),
@@ -229,7 +245,7 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                       child: OutlinedButton.icon(
                         onPressed: cycle.day > 1 ? () => _prevDay(cycle, storage) : null,
                         icon: const Icon(Icons.remove),
-                        label: const Text('Jou -'),
+                        label: const Text('Jour -'),
                         style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
                       ),
                     ),
@@ -237,7 +253,6 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                 ]),
                 const SizedBox(height: 16),
 
-                // Symptoms
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -246,7 +261,7 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                     boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
                   ),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Row(children: [Icon(Icons.healing, color: AppTheme.rose), SizedBox(width: 8), Text('Sentòm', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]),
+                    const Row(children: [Icon(Icons.healing, color: AppTheme.rose), SizedBox(width: 8), Text('Symptômes', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 12),
                     Wrap(spacing: 8, runSpacing: 8, children: _symptoms.map((s) {
                       final sel = cycle.symptoms.contains(s);
@@ -268,7 +283,6 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                 ),
                 const SizedBox(height: 16),
 
-                // Notes
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -277,12 +291,12 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
                     boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
                   ),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Row(children: [Icon(Icons.note, color: AppTheme.lavender), SizedBox(width: 8), Text('Nòt', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]),
+                    const Row(children: [Icon(Icons.note, color: AppTheme.lavender), SizedBox(width: 8), Text('Notes', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))]),
                     const SizedBox(height: 12),
                     TextField(
                       controller: _notesController,
                       maxLines: 3,
-                      decoration: InputDecoration(hintText: 'Kòman w santi w jodi a?', hintStyle: TextStyle(color: Colors.grey[400]), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+                      decoration: InputDecoration(hintText: 'Comment vous sentez-vous aujourd\'hui ?', hintStyle: TextStyle(color: Colors.grey[400]), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
                       onChanged: (v) => storage.updateCycle(cycle.copyWith(notes: v)),
                     ),
                   ]),
@@ -344,20 +358,20 @@ class _CycleTrackerScreenState extends State<CycleTrackerScreen> with SingleTick
 
   String _phaseDescription(int phase) {
     const desc = {
-      0: 'Premye jou règ ou. Kò w ap renouvle tèt li.',
-      1: 'Aprè règ, kò w prepare pou yon nouvo sik.',
-      2: 'Peryòd fètilite maksimòm. Si w pa vle gwosès, pwoteje w.',
-      3: 'Kò w ap prepare pou yon lòt sik. Sentòm PMS ka parèt.',
+      0: 'Premiers jours de règles. Votre corps se renouvelle.',
+      1: 'Après les règles, votre corps se prépare pour un nouveau cycle.',
+      2: 'Période de fertilité maximale. Si vous ne voulez pas de grossesse, protégez-vous.',
+      3: 'Votre corps se prépare pour un autre cycle. Symptômes PMS possibles.',
     };
     return desc[phase] ?? '';
   }
 
   Widget _phaseTip(int phase) {
     final tips = {
-      0: '💧 Pran repos, bwar dlo cho, sèvi kousen chofe pou doulè.',
-      1: '🌱 Bon moman pou fè egzèsis, li, planifye.',
-      2: '🥚 Si w vle gwosès, se kounye a! Sinon, sèvi kapòt.',
-      3: '🌙 Sèvi tekhnik detant, meditasyon, dòmi bonè.',
+      0: 'Reposez-vous, buvez de l\'eau chaude, utilisez une bouillotte contre la douleur.',
+      1: 'Bon moment pour faire du sport, lire, planifier.',
+      2: 'Si vous voulez une grossesse, c\'est maintenant ! Sinon, utilisez un préservatif.',
+      3: 'Essayez la relaxation, la méditation, un coucher tôt.',
     };
     return Container(
       padding: const EdgeInsets.all(12),

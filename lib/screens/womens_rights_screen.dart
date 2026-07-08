@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_icon.dart';
 
 class WomensRightsScreen extends StatelessWidget {
   const WomensRightsScreen({super.key});
@@ -7,36 +8,36 @@ class WomensRightsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rights = [
-      _Right(icon: Icons.gavel, title: 'Dwa Fanm an Ayiti', articles: [
-        'Fèm gen menm dwa ak gason dapre konstitisyon ayisyèn.',
-        'Vyolans sou fanm se yon krim. Denonse li.',
-        'Fanm gen dwa travay, ale lekòl, epi patisipe nan politik.',
+      _Right(icon: 'firstAid', title: 'Droits des femmes en Haïti', articles: [
+        'Les femmes ont les mêmes droits que les hommes selon la constitution haïtienne.',
+        'La violence contre les femmes est un crime. Dénoncez-la.',
+        'Les femmes ont le droit de travailler, d\'aller à l\'école, et de participer à la politique.',
       ]),
-      _Right(icon: Icons.family_restroom, title: 'Dwa Fanm ansent', articles: [
-        'Fanm ansent gen dwa kongje matènite (3 mwa).',
-        'Yo pa ka revoke w paske w ansent.',
-        'Gen dwa swivi medikal gratis nan lopital piblik.',
+      _Right(icon: 'firstAid', title: 'Droits des femmes enceintes', articles: [
+        'Les femmes enceintes ont droit au congé maternité (3 mois).',
+        'On ne peut pas vous licencier parce que vous êtes enceinte.',
+        'Droit au suivi médical gratuit dans les hôpitaux publics.',
       ]),
-      _Right(icon: Icons.shield, title: 'Pwoteksyon kont vyolans', articles: [
-        'Lwa sancione vyolans sou fanm (Lwa 2014).',
-        'Vyolans domestik se yon krim piblik.',
-        'Ou ka depoze yon plent nan komisarya.',
-        'Nimewo SOS: **133 (Liy Kriz), 114 (Polis).',
+      _Right(icon: 'firstAid', title: 'Protection contre la violence', articles: [
+        'La loi sanctionne la violence contre les femmes (Loi 2014).',
+        'La violence domestique est un crime public.',
+        'Vous pouvez déposer plainte au commissariat.',
+        'Numéros d\'urgence : **133 (Ligne Crise), 114 (Police).',
       ]),
-      _Right(icon: Icons.school, title: 'Dwa Edikasyon', articles: [
-        'Tout timoun gen dwa ale lekòl, garçons ak fi.',
-        'Lekòl piblik la gratis an Ayiti.',
-        'Gen dwa aprann li ak ekri.',
+      _Right(icon: 'firstAid', title: 'Droit à l\'éducation', articles: [
+        'Tous les enfants ont le droit d\'aller à l\'école, garçons et filles.',
+        'L\'école publique est gratuite en Haïti.',
+        'Droit d\'apprendre à lire et à écrire.',
       ]),
-      _Right(icon: Icons.health_and_safety, title: 'Dwa Sante', articles: [
-        'Fanm gen dwa jwenn swen sante san diskriminasyon.',
-        'Planin familyal ak kontrasepsyon disponib.',
-        'Tès VIP ak tès gwosès disponib nan lopital.',
+      _Right(icon: 'firstAid', title: 'Droit à la santé', articles: [
+        'Les femmes ont droit aux soins de santé sans discrimination.',
+        'Planning familial et contraception disponibles.',
+        'Tests VIH et tests de grossesse disponibles à l\'hôpital.',
       ]),
-      _Right(icon: Icons.work, title: 'Dwa Travay', articles: [
-        'Fanm gen dwa travay nan nenpòt domèn.',
-        'Yo dwe resevwa menm salè ak gason pou menm travay.',
-        'Yo pa ka refize anboche w paske w se yon fanm.',
+      _Right(icon: 'firstAid', title: 'Droit au travail', articles: [
+        'Les femmes ont le droit de travailler dans tous les domaines.',
+        'Elles doivent recevoir le même salaire que les hommes pour le même travail.',
+        'On ne peut pas refuser de vous embaucher parce que vous êtes une femme.',
       ]),
     ];
 
@@ -46,18 +47,18 @@ class WomensRightsScreen extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(title: const Text('⚖️ Dwa Fanm')),
+        appBar: AppBar(title: const Text('Droits des femmes')),
         body: ListView(
           padding: const EdgeInsets.all(16),
           children: rights.map((r) => Card(
             child: ExpansionTile(
-              leading: CircleAvatar(backgroundColor: AppTheme.lavenderPale, child: Icon(r.icon, color: AppTheme.lavender, size: 22)),
+              leading: CircleAvatar(backgroundColor: AppTheme.lavenderPale, child: AppIcon(r.icon, size: 22, color: AppTheme.lavender)),
               title: Text(r.title, style: const TextStyle(fontWeight: FontWeight.w600)),
               childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               children: r.articles.map((a) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Icon(Icons.check_circle, size: 16, color: AppTheme.lavender),
+                  const AppIcon('firstAid', size: 16, color: AppTheme.lavender),
                   const SizedBox(width: 8),
                   Expanded(child: Text(a, style: const TextStyle(fontSize: 13, height: 1.4))),
                 ]),
@@ -71,7 +72,7 @@ class WomensRightsScreen extends StatelessWidget {
 }
 
 class _Right {
-  final IconData icon;
+  final String icon;
   final String title;
   final List<String> articles;
   const _Right({required this.icon, required this.title, required this.articles});

@@ -3,7 +3,8 @@ class AppConstants {
 
   static const String appName = 'Fanm+';
   static const String appVersion = '2.0.0';
-  static const String developer = 'STEPHANIE A.G';
+  static const String developer = 'STEPHNIE A.G';
+  static const String developerPhone = '+50946334115';
   static const String copyright = '© 2026 Fanm+. Tout dwa rezève.';
 
   static const List<Map<String, String>> sosContacts = [

@@ -132,6 +132,9 @@ class _DashboardScreen extends StatelessWidget {
     _DashAction(icon: Icons.lightbulb, label: 'Konsey', color: Color(0xFFFF9800), emoji: '💡'),
     _DashAction(icon: Icons.calendar_month, label: 'Sik', color: Color(0xFFE91E63), emoji: '🌸'),
     _DashAction(icon: Icons.favorite, label: 'Seks', color: Color(0xFFF06292), emoji: '💋'),
+    _DashAction(icon: Icons.water_drop, label: 'Pt & Mykz', color: Color(0xFF7C4DFF), emoji: '💧'),
+    _DashAction(icon: Icons.history, label: 'Istorik', color: Color(0xFF26A69A), emoji: '📊'),
+    _DashAction(icon: Icons.health_and_safety, label: 'VIH', color: Color(0xFF9C27B0), emoji: '📊'),
     _DashAction(icon: Icons.school, label: 'Jèn', color: Color(0xFF00ACC1), emoji: '🌱'),
     _DashAction(icon: Icons.local_hospital, label: 'Doktè', color: Color(0xFF9C27B0), emoji: '👩‍⚕️'),
     _DashAction(icon: Icons.pregnant_woman, label: 'Gwosès', color: Color(0xFFF48FB1), emoji: '🤰'),
@@ -367,6 +370,9 @@ class _ActionCard extends StatelessWidget {
             case 'Motivasyon': screen = const DailyMotivationScreen(); break;
             case 'Konsey': screen = const AdviceScreen(); break;
             case 'Sik': screen = const CycleTrackerScreen(); break;
+            case 'Pt & Mykz': screen = const DischargeMycosisScreen(); break;
+            case 'Istorik': screen = const CycleHistoryScreen(); break;
+            case 'VIH': screen = const HivScreen(); break;
             case 'Seks': screen = const SexTrackerScreen(); break;
             case 'Jèn': screen = const TeensCornerScreen(); break;
             case 'Doktè': screen = const DoctorsScreen(); break;
