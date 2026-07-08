@@ -31,6 +31,7 @@ import 'beauty_screen.dart';
 import 'todo_screen.dart';
 import 'admin_screen.dart';
 import 'profile_screen.dart';
+import 'vih/vih_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -149,8 +150,9 @@ class _DashboardScreen extends StatelessWidget {
     _DashAction(icon: Icons.folder, label: 'Dosye', color: Color(0xFF6D4C41), emoji: '📋'),
     _DashAction(icon: Icons.spa, label: 'Byennèt', color: Color(0xFF43A047), emoji: '🧘'),
     _DashAction(icon: Icons.auto_awesome, label: 'Oròskòp', color: Color(0xFF8E24AA), emoji: '⭐'),
-    _DashAction(icon: Icons.admin_panel_settings, label: 'Admin', color: Color(0xFF37474F), emoji: '🛡️'),
-  ];
+  _DashAction(icon: Icons.admin_panel_settings, label: 'Admin', color: Color(0xFF37474F), emoji: '🛡️'),
+  _DashAction(icon: Icons.medical_services, label: 'VIH', color: Color(0xFF1A5C1A), emoji: '🩺'),
+];
 
   @override
   Widget build(BuildContext context) {
@@ -389,6 +391,7 @@ class _ActionCard extends StatelessWidget {
             case 'Byennèt': screen = const WellnessScreen(); break;
             case 'Oròskòp': screen = const HoroscopeScreen(); break;
             case 'Admin': screen = const AdminScreen(); break;
+        case 'VIH': screen = const VIHScreen(); break;
             default: screen = const SizedBox();
           }
           Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
