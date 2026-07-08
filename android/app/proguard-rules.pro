@@ -1,0 +1,9 @@
+-keep class com.fanmplus.fanmplus_ai.** { *; }
+-keep class io.flutter.** { *; }
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-keep class com.google.ads.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn com.google.ads.**
+-dontwarn com.google.android.gms.**
