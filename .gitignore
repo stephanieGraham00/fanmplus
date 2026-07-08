@@ -1,0 +1,40 @@
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.dart_tool/
+build/
+
+# Android
+android/app/build/
+android/.gradle/
+android/local.properties
+android/key.properties
+*.iml
+*.hprof
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Runner.xcodeproj/project.xcworkspace
+ios/Runner.xcodeproj/xcuserdata
+
+# Web
+web/icons/Icon-*.png
+!web/icons/Icon-192.png
+!web/icons/Icon-512.png
+!web/icons/Icon-maskable-192.png
+!web/icons/Icon-maskable-512.png
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
